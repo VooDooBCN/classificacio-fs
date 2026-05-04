@@ -98,24 +98,24 @@ app.get("/api/resultats", async (req, res) => {
 
     let partits = [];
 
-    $("table tbody tr").each((i, el) => {
+    $("tr").each((i, el) => {
 
-      const tds = $(el).find("td");
+  const tds = $(el).find("td");
 
-      if (tds.length < 3) return;
+  if (tds.length < 5) return;
 
-      const local = $(tds[0]).text().trim();
-      const resultat = $(tds[1]).text().trim();
-      const visitant = $(tds[2]).text().trim();
+  const local = $(tds[1]).text().trim();
+  const resultat = $(tds[2]).text().trim();
+  const visitant = $(tds[3]).text().trim();
 
-      if (!local || !visitant) return;
+  if (!local || !visitant || !resultat.includes("-")) return;
 
-      partits.push({
-        local,
-        visitant,
-        resultat
-      });
-    });
+  partits.push({
+    local,
+    visitant,
+    resultat
+  });
+});
 
     res.json(partits);
 
