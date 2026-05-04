@@ -17,25 +17,16 @@ let cache = {};
 let lastFetch = {};
 
 // 🔥 ENDPOINT DINÀMIC
-app.get("/api/classificacio/:lliga", async (req, res) => {
+app.get("/api/classificacio", async (req, res) => {
 
-  const lliga = req.params.lliga;
-  const URL = URLS[lliga];
+  const url = req.query.url;
 
-  if (!URL) {
-    return res.status(404).json({ error: "Lliga no trobada" });
-  }
-
-  // 👉 cache per lliga
-  if (
-    cache[lliga] &&
-    Date.now() - (lastFetch[lliga] || 0) < 60000
-  ) {
-    return res.json(cache[lliga]);
+  if (!url) {
+    return res.status(400).json({ error: "Falta URL" });
   }
 
   try {
-    const { data } = await axios.get(URL);
+    const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
     let equips = [];
@@ -51,7 +42,6 @@ app.get("/api/classificacio/:lliga", async (req, res) => {
       const nums = clean.filter(c => /^\d+$/.test(c));
       if (nums.length < 6) return;
 
-      // 🔥 ESCUT
       const img = $(el).find("img").attr("src");
 
       let escut = "";
@@ -74,10 +64,6 @@ app.get("/api/classificacio/:lliga", async (req, res) => {
         logo: escut
       });
     });
-
-    // 👉 guardar cache per lliga
-    cache[lliga] = equips;
-    lastFetch[lliga] = Date.now();
 
     res.json(equips);
 
