@@ -98,25 +98,27 @@ app.get("/api/resultats", async (req, res) => {
 
     let partits = [];
 
-    $("tr").each((i, el) => {
+$("tbody tr").each((i, el) => {
 
-  const tds = $(el).find("td");
+  const text = $(el).text();
 
-  if (tds.length < 5) return;
+  if (!text.includes("-")) return;
 
-  const local = $(tds[1]).text().trim();
-  const resultat = $(tds[2]).text().trim();
-  const visitant = $(tds[3]).text().trim();
+  const parts = text.split("\n").map(t => t.trim()).filter(t => t);
 
-  if (!local || !visitant || !resultat.includes("-")) return;
+  if (parts.length < 3) return;
 
   partits.push({
-    local,
-    visitant,
-    resultat
+    local: parts[0],
+    resultat: parts[1],
+    visitant: parts[2]
   });
 });
 
+    // 👉 guardar cache
+    cache[url] = equips;
+    lastFetch[url] = Date.now();    
+    
     res.json(partits);
 
   } catch (err) {
