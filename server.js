@@ -126,23 +126,28 @@ $("tbody tr").each((i, el) => {
   let data = "";
   let hora = "";
 
-  // 🔥 recórrer totes les columnes
   tds.each((i, td) => {
     const txt = $(td).text().replace(/\s+/g, " ").trim();
 
-    // marcador
-    if (/\d+\s*-\s*\d+/.test(txt)) {
-      resultat = txt.match(/\d+\s*-\s*\d+/)[0];
+    // marcador real (6 - 1)
+    if (/^\d+\s*-\s*\d+$/.test(txt)) {
+      resultat = txt;
     }
 
-    // data
-    if (/\d{2}-\d{2}-\d{4}/.test(txt)) {
+    // data completa
+    else if (/^\d{2}-\d{2}-\d{4}$/.test(txt)) {
       data = txt.slice(0, 5);
     }
 
     // hora
-    if (/\b\d{1,2}:\d{2}\b/.test(txt)) {
-      hora = txt.match(/\b\d{1,2}:\d{2}\b/)[0];
+    else if (/^\d{1,2}:\d{2}$/.test(txt)) {
+      hora = txt;
+    }
+
+    // 👇 aquest és el FIX IMPORTANT
+    // si trobem "07-05" (sense any), també és data
+    else if (/^\d{2}-\d{2}$/.test(txt)) {
+      data = txt;
     }
   });
 
