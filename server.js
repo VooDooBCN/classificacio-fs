@@ -6,10 +6,16 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-// 🔥 CACHE
-let cache = {};
-let lastFetch = {};
+// 🔥 CACHE SEPARAT
+let cacheClass = {};
+let cacheRes = {};
+let lastFetchClass = {};
+let lastFetchRes = {};
 
+
+// ===============================
+// 📊 CLASSIFICACIÓ
+// ===============================
 app.get("/api/classificacio", async (req, res) => {
 
   const url = req.query.url;
@@ -18,14 +24,13 @@ app.get("/api/classificacio", async (req, res) => {
     return res.status(400).json({ error: "Falta URL" });
   }
 
-  // 🔒 SEGURETAT
   if (!url.includes("fcf.cat")) {
     return res.status(403).json({ error: "URL no permesa" });
   }
 
   // 🔥 CACHE
-  if (cache[url] && Date.now() - (lastFetch[url] || 0) < 60000) {
-    return res.json(cache[url]);
+  if (cacheClass[url] && Date.now() - (lastFetchClass[url] || 0) < 60000) {
+    return res.json(cacheClass[url]);
   }
 
   try {
@@ -68,9 +73,8 @@ app.get("/api/classificacio", async (req, res) => {
       });
     });
 
-    // 👉 guardar cache
-    cache[url] = equips;
-    lastFetch[url] = Date.now();
+    cacheClass[url] = equips;
+    lastFetchClass[url] = Date.now();
 
     res.json(equips);
 
@@ -80,6 +84,10 @@ app.get("/api/classificacio", async (req, res) => {
   }
 });
 
+
+// ===============================
+// ⚽ RESULTATS
+// ===============================
 app.get("/api/resultats", async (req, res) => {
 
   const url = req.query.url;
@@ -92,33 +100,43 @@ app.get("/api/resultats", async (req, res) => {
     return res.status(403).json({ error: "URL no permesa" });
   }
 
+  // 🔥 CACHE
+  if (cacheRes[url] && Date.now() - (lastFetchRes[url] || 0) < 60000) {
+    return res.json(cacheRes[url]);
+  }
+
   try {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
     let partits = [];
 
-$("tbody tr").each((i, el) => {
+    $("tbody tr").each((i, el) => {
 
-  const text = $(el).text();
+      const text = $(el).text();
 
-  if (!text.includes("-")) return;
+      if (!text.includes("-")) return;
 
-  const parts = text.split("\n").map(t => t.trim()).filter(t => t);
+      const parts = text
+        .split("\n")
+        .map(t => t.trim())
+        .filter(t => t);
 
-  if (parts.length < 3) return;
+      if (parts.length < 3) return;
 
-  partits.push({
-    local: parts[0],
-    resultat: parts[1],
-    visitant: parts[2]
-  });
-});
+      partits.push({
+        local: parts[0],
+        resultat: parts[1],
+        visitant: parts[2]
+      });
+    });
 
-    // 👉 guardar cache
-    cache[url] = partits;
-    lastFetch[url] = Date.now();    
-    
+    // 👉 només guardar si hi ha dades
+    if (partits.length > 0) {
+      cacheRes[url] = partits;
+      lastFetchRes[url] = Date.now();
+    }
+
     res.json(partits);
 
   } catch (err) {
@@ -126,6 +144,7 @@ $("tbody tr").each((i, el) => {
     res.status(500).json({ error: "Error obtenint resultats" });
   }
 });
+
 
 // ROOT
 app.get("/", (req, res) => {
