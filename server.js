@@ -111,25 +111,28 @@ app.get("/api/resultats", async (req, res) => {
 
     let partits = [];
 
-    $("tbody tr").each((i, el) => {
+$("tbody tr").each((i, el) => {
 
-      const text = $(el).text();
+  const tds = $(el).find("td");
 
-      if (!text.includes("-")) return;
+  if (tds.length < 5) return;
 
-      const parts = text
-        .split("\n")
-        .map(t => t.trim())
-        .filter(t => t);
+  const local = $(tds[1]).text().trim();
+  const resultat = $(tds[2]).text().trim();
+  const visitant = $(tds[3]).text().trim();
 
-      if (parts.length < 3) return;
+  // ignorar files rares
+  if (!local || !visitant) return;
 
-      partits.push({
-        local: parts[0],
-        resultat: parts[1],
-        visitant: parts[2]
-      });
-    });
+  // ignorar "ACTA TANCADA"
+  if (!resultat.includes("-")) return;
+
+  partits.push({
+    local,
+    resultat,
+    visitant
+  });
+});
 
     // 👉 només guardar si hi ha dades
     if (partits.length > 0) {
