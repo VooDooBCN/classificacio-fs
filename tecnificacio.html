@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang='ca'>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tecnificació | Futbol Sala Parets</title>
+  <link rel="stylesheet" href="style.css?v=1.0.4">
+  <!-- Tipus de lletra i icones (igual que a index.html) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body class="subpage">
+
+<div id="header-container"></div>
+  
+<main>
+  
+<section class="news-detail">
+  <div class="container">
+
+    <h1>Nova tecnificació de futbol sala al F.S. Parets</h1>
+
+    <p class="news-date">Abril 2026</p>
+
+    <!-- IMATGE PRINCIPAL -->
+    <img src="img/noticia-tecnificacio.jpg" alt="Tecnificació F.S. Parets" class="news-detail-image">
+
+    <!-- INTRO -->
+    <p>
+      El F.S. Parets posa en marxa una nova tecnificació dirigida a jugadors i jugadores
+      que volen millorar el seu nivell tècnic i tàctic.
+    </p>
+
+    <p>
+      La tecnificació ha estat preparada pels entrenadors Albert Cardenas i Rafa Muñoz,
+      amb l’objectiu de potenciar habilitats individuals i millorar la presa de decisions en joc real.
+    </p>
+
+    <!-- DIA 1 -->
+    <h2>Dia 1</h2>
+
+    <p class="gallery-subtitle">
+      Primera jornada amb la participació de Fran Burgueño, exjugador del F.S. Parets i actual
+      entrenador de porters de la Selecció Espanyola.
+    </p>
+
+    <div class="gallery">
+      <img src="img/dia1-1.jpg" alt="">
+      <img src="img/dia1-2.jpg" alt="">
+      <img src="img/dia1-3.jpg" alt="">
+      <img src="img/dia1-4.jpg" alt="">
+    </div>
+
+    <a href="tecnificacio-dia1.html" class="btn-gallery">
+      Veure totes les imatges del dia 1 →
+    </a>
+
+    <!-- DIA 2 -->
+    <h2>Dia 2</h2>
+
+    <p class="gallery-subtitle">
+       Segona jornada amb Fran Burgueño i Jordi Campoy, exjugador del Jaén Paraíso Interior,
+       treballant aspectes tècnics i tàctics en situacions reals de joc.
+    </p>
+
+    <div class="gallery">
+      <img src="img/dia2-1.jpg" alt="">
+      <img src="img/dia2-2.jpg" alt="">
+      <img src="img/dia2-3.jpg" alt="">
+      <img src="img/dia2-4.jpg" alt="">
+    </div>
+
+    <a href="tecnificacio-dia2.html" class="btn-gallery">
+      Veure totes les imatges del dia 2 →
+    </a>
+
+    <!-- DIA 3 -->
+    <h2>Dia 3</h2>
+
+    <p class="gallery-subtitle">
+      La tercera i última jornada ha comptat amb la participació de Fran Burgueño i Javi Rodríguez,
+      entrenador del FC Barcelona de futbol sala. Una sessió especial que ha posat el punt final a la
+      tecnificació, amb la participació activa dels jugadors i un gran ambient durant tota la jornada.
+      La cloenda s’ha completat amb el sorteig de regals.
+    </p>
+
+    <div class="gallery">
+      <img src="img/dia3-1.jpg" alt="">
+      <img src="img/dia3-2.jpg" alt="">
+      <img src="img/dia3-3.jpg" alt="">
+      <img src="img/dia3-4.jpg" alt="">
+    </div>
+
+    <a href="tecnificacio-dia3.html" class="btn-gallery">
+      Veure totes les imatges del dia 3 →
+    </a>
+
+  </div>
+</section>
+
+<div id="sponsors-container"></div>
+  
+</main>
+  
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; <span id="any-actual"></span> Futbol Sala Parets</p>
+
+    <a class="footer-ajuntament" href="https://www.parets.cat/" target="_blank" rel="noopener">
+      <img src="img/Ajuntament-Parets-BN.png" alt="Ajuntament de Parets del Vallès">
+    </a>
+  </div>
+</footer>
+
+<!-- 👇 AQUI VA EL LIGHTBOX -->
+<div id="lightbox" class="lightbox">
+  <span class="lightbox-close">&times;</span>
+  <img class="lightbox-content" id="lightbox-img">
+</div>
+  
+<script>
+  // Any actual al peu
+  const any = document.getElementById('any-actual');
+  if (any) {
+    any.textContent = new Date().getFullYear();
+  }
+</script>
+  
+<script src="js/carrusel.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/header.js"></script>
+  
+<script>
+const lang = document.documentElement.lang || "ca";
+
+/* HEADER */
+fetch(lang === "es" 
+  ? "components/header-es.html" 
+  : "components/header-cat.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("header-container").innerHTML = data;
+
+    setTimeout(() => {
+      initHeader();
+    }, 50);
+  });
+
+/* SPONSORS */
+fetch("components/sponsors.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sponsors-container").innerHTML = data;
+
+    setTimeout(() => {
+      initCarousel();
+    }, 50);
+  });
+</script>
+  
+<!-- ✅ SCRIPT LIGHTBOX (AFEGIT AQUÍ) -->
+<script>
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const closeBtn = document.querySelector(".lightbox-close");
+
+document.querySelectorAll(".gallery img").forEach(img => {
+    img.addEventListener("click", () => {
+        lightbox.style.display = "flex"; // en lloc de block
+        lightboxImg.src = img.src;
+    });
+});
+
+closeBtn.onclick = () => {
+    lightbox.style.display = "none";
+};
+
+lightbox.onclick = (e) => {
+    if (e.target === lightbox) {
+        lightbox.style.display = "none";
+    }
+};
+</script>
+
+<div id="cookie-banner" style="position:fixed;bottom:0;width:100%;background:#000;color:#fff;padding:15px;text-align:center;z-index:9999;display:none;">
+  Aquesta web utilitza cookies per mostrar contingut extern.
+  <button onclick="acceptarCookies()">Acceptar</button>
+  <button onclick="rebutjarCookies()">Rebutjar</button>
+</div>  
+  
+</body>
+</html>

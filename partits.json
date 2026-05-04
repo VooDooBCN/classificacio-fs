@@ -1,0 +1,110 @@
+[
+    {
+        "categoria": "MINI-PREBENJAMIN",
+        "descansa": true
+    },
+    {
+        "categoria": "PREBENJAMIN A",
+        "rival": "Cardedeu FS ‘A’",
+        "localitat": "VISITANTE",
+        "dia": "08\/02",
+        "hora": "09:00",
+        "camp": "Pista Mpal. De Cardedeu"
+    },
+    {
+        "categoria": "ALEVÍN A",
+        "rival": "St.Joan Vilassar ‘B’",
+        "localitat": "LOCAL",
+        "dia": "08\/02",
+        "hora": "10:30",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "ALEVÍN B",
+        "rival": "Natació Sabadell ‘B’",
+        "localitat": "LOCAL",
+        "dia": "08\/02",
+        "hora": "09:00",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "INFANTIL A",
+        "rival": "Futsal Pineda ‘A’",
+        "localitat": "LOCAL",
+        "dia": "08\/02",
+        "hora": "17:30",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "INFANTIL B",
+        "rival": "St.Joan Vilassar ‘E’",
+        "localitat": "VISITANTE",
+        "dia": "08\/02",
+        "hora": "10:20",
+        "camp": "Pavelló Mpal. Paco Martin"
+    },
+    {
+        "categoria": "CADETE FEM.",
+        "rival": "FS Castellar ‘A’",
+        "localitat": "LOCAL",
+        "dia": "07\/02",
+        "hora": "12:00",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "CADETE A",
+        "rival": "Arenys de Mar ‘A’",
+        "localitat": "LOCAL",
+        "dia": "07\/02",
+        "hora": "13:30",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "CADETE B",
+        "rival": "Montornes FS ‘A’",
+        "localitat": "LOCAL",
+        "dia": "08\/02",
+        "hora": "14:30",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "JUVENIL A",
+        "rival": "Futsal Centelles ‘A’",
+        "localitat": "VISITANTE",
+        "dia": "07\/02",
+        "hora": "12:00",
+        "camp": "Pavelló Mpal. De Centelles"
+    },
+    {
+        "categoria": "JUVENIL C",
+        "rival": "Sporting Montmeló CFS ‘A’",
+        "localitat": "LOCAL",
+        "dia": "08\/02",
+        "hora": "19:00",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "SENIOR FEM.",
+        "rival": "CEFS Manlleu ‘A’",
+        "localitat": "LOCAL",
+        "dia": "07\/02",
+        "hora": "16:00",
+        "camp": "Pabellón Redondo"
+    },
+    {
+        "categoria": "SENIOR B",
+        "rival": "Lliça de Vall FS ‘A’",
+        "localitat": "VISITANTE",
+        "dia": "08\/02",
+        "hora": "12:30",
+        "camp": "Pavelló Mpal. Lliça de Vall"
+    },
+    {
+        "categoria": "SENIOR A",
+        "rival": "CEFS Manlleu ‘A’",
+        "localitat": "LOCAL",
+        "dia": "08\/02",
+        "hora": "12:00",
+        "camp": "Pabellón Redondo"
+    }
+]

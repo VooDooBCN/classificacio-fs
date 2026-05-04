@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junta Directiva - Futbol Sala Parets</title>
+  <link rel="stylesheet"  href="style.css?v=1.0.3" />
+  <!-- Tipus de lletra i icones (igual que a index.html) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body class="subpage">
+
+<div id="header-container"></div>
+
+<main>
+ <section class="page-header">
+  <div class="container">
+    <h1>Junta Directiva</h1>
+    <p>Organització i direcció del club</p>
+  </div>
+</section>
+
+<!-- CONTINGUT -->
+<section class="junta-section">
+  <div class="container">
+
+    <div class="junta-grid">
+
+      <div class="card highlight">
+        <span class="role">President</span>
+        <h3>Andrés Gómez Ibáñez</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Secretari</span>
+        <h3>Francisco García Ortega</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Tresorer</span>
+        <h3>Alberto Sorando Puyal</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Alberto Fernández Manrubia</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Alberto Rabaza Grau</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>David López Requena</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Francisco Javier Alferez Muñoz</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Francisco Javier Ribas Martí</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Manuel Pérez Cabanillas</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Marc Vilaseca Segarra</h3>
+      </div>
+
+      <div class="card">
+        <span class="role">Vocal</span>
+        <h3>Matías Fernández Di Masso</h3>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<div id="sponsors-container"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; <span id="any-actual"></span> Futbol Sala Parets</p>
+
+    <a class="footer-ajuntament" href="https://www.parets.cat/" target="_blank" rel="noopener">
+      <img src="img/Ajuntament-Parets-BN.png" alt="Ajuntament de Parets del Vallès">
+    </a>
+  </div>
+</footer>
+
+<script>
+  // Any actual al peu
+  const any = document.getElementById('any-actual');
+  if (any) {
+    any.textContent = new Date().getFullYear();
+  }
+</script>
+  
+<script src="js/carrusel.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/header.js"></script>
+  
+<script>
+const lang = document.documentElement.lang || "ca";
+
+/* HEADER */
+fetch(lang === "es" 
+  ? "components/header-es.html" 
+  : "components/header-cat.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("header-container").innerHTML = data;
+
+    setTimeout(() => {
+      initHeader();
+    }, 50);
+  });
+
+/* SPONSORS */
+fetch("components/sponsors.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sponsors-container").innerHTML = data;
+
+    setTimeout(() => {
+      initCarousel();
+    }, 50);
+  });
+</script>
+
+<div id="cookie-banner" style="position:fixed;bottom:0;width:100%;background:#000;color:#fff;padding:15px;text-align:center;z-index:9999;display:none;">
+  Aquesta web utilitza cookies per mostrar contingut extern.
+  <button onclick="acceptarCookies()">Acceptar</button>
+  <button onclick="rebutjarCookies()">Rebutjar</button>
+</div>
+
+</body>
+</html>

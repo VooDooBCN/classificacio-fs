@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primer equip masculí - Plantilla | Futbol Sala Parets</title>
+  <link rel="stylesheet"  href="style.css?v=1.0.3" />
+  <!-- Tipus de lletra i icones (igual que a index-es.html) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body>
+
+<header class="site-header compact">
+
+  <!-- TIRA SUPERIOR AMB INSTAGRAM A LA DRETA -->
+<div class="top-strip">
+  <div class="container top-strip-container">
+    <div class="top-right">
+      <div class="lang-switch">
+        <a href="index.html">CAT</a>
+        <span>|</span>
+        <a href="index-es.html" class="active">ES</a>
+      </div>
+
+      <div class="top-social">
+        <a href="https://www.instagram.com/fsparets/" target="_blank">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- BARRA PRINCIPAL -->
+  <div class="main-bar">
+    <div class="container nav-container">
+      <!-- LOGO + NOM -->
+      <a href="index-es.html#inici" class="brand">
+        <img src="img/logo-fsparets.png" alt="Escut F.S. Parets">
+        <div class="brand-text">
+          <span class="brand-name">Futbol Sala Parets</span>
+          <span class="brand-sub">Fundado en 1974</span>
+        </div>
+      </a>
+
+      <!-- BOTÓ MENÚ MÒBIL -->
+      <button class="nav-toggle" aria-label="Obrir o tancar el menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+<!-- MENÚ PRINCIPAL -->
+      <nav class="main-nav">
+        <a href="index-es.html#inici">Inicio</a>
+        <a href="index-es.html#club">Club</a>
+        <a href="index-es.html#noticies">Noticias</a>
+        <a href="index-es.html#equips">Equipos</a>
+        <a href="index-es.html#base">Fútbol base</a>
+        <a href="index-es.html#patrocinadors">Patrocinadores</a>
+        <a href="index-es.html#contacte">Contacto</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Sénior A Masculino</h1>
+      <p>Plantilla de la categoria Sénior A Masculino del Fútbol Sala Parets.</p>
+    </div>
+  </section>
+
+  <div class="container page-content">
+    <section class="section light">
+      <div class="two-col">
+        <div>
+          <img src="img/base-senior-A-masculi-plantilla.jpg"
+               alt="Plantilla Aleví"
+               style="border-radius: 12px; box-shadow: 0 12px 25px rgba(0,0,0,0.15);" />
+        </div>
+        <div>
+          <h2>Plantilla</h2>
+          <ul>
+            <li> Arnau Aspas </li>
+            <li> Miquel De Castro </li>
+            <li> Arnau Fernández </li>
+            <li> Izan Ferreres </li>
+            <li> David Hierro </li>
+            <li> David Jimenez </li>
+            <li> Jordi Lopez </li>
+            <li> Antoni López </li>
+            <li> Ismael Martín </li>
+            <li> Ramon Morales </li>
+            <li> Raul Francisco Muñoz </li>
+            <li> Jorge Román </li>
+            <li> Erik Romero </li>
+            <li> Javier Vazquez </li>
+            <li> Oriol Garcia </li>
+            <!-- Afegeix o modifica jugadors segons calgui -->
+          </ul>
+          <h2>Entrenador</h2>
+          <ul>
+            <li> Jesus Vazquez </li>
+          </ul>
+          <h2> Segundo Entrenador </h2>
+          <ul>
+            <li> Daniel Gijon </li>
+          </ul>
+          <h2> Delegado </h2>
+          <ul>
+            <li> Pedro Miguel Borrallo </li>
+          </ul>
+        </div>
+    </div>
+    </section>
+    <section class="sponsors-final">
+     <img src="img/patrocinadors.png" alt="Patrocinadores">
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; <span id="any-actual"></span> Futbol Sala Parets</p>
+
+    <a class="footer-ajuntament" href="https://www.parets.cat/" target="_blank" rel="noopener">
+      <img src="img/Ajuntament-Parets-BN.png" alt="Ajuntament de Parets del Vallès">
+    </a>
+  </div>
+</footer>
+  
+<script>
+  const anySpan = document.getElementById("any-actual");
+  if (anySpan) {{
+    anySpan.textContent = new Date().getFullYear();
+  }}
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.main-nav');
+
+  if (navToggle && nav) {{
+    navToggle.addEventListener('click', () => {{
+      navToggle.classList.toggle('open');
+      nav.classList.toggle('open');
+    }});
+
+    document.querySelectorAll('.main-nav a').forEach(link => {{
+      link.addEventListener('click', () => {{
+        if (nav.classList.contains('open')) {{
+          nav.classList.remove('open');
+          navToggle.classList.remove('open');
+        }}
+      }});
+    }});
+  }}
+</script>
+
+</body>
+</html>

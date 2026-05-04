@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang='es'>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primer equip masculí - Resultados | Futbol Sala Parets</title>
+  <link rel="stylesheet"  href="style.css?v=1.0.3" />
+  <!-- Tipus de lletra i icones (igual que a index-es.html) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body class="subpage">
+
+<div id="header-container"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Sénior A Masculino</h1>
+      <p>Resultados y clasificación de la categoría Sénior A Masculino.</p>
+    </div>
+  </section>
+
+  <div class="container page-content">
+    <!-- RESULTATS -->
+    <section class="section light">
+      <div class="section-header">
+        <h2>Resultados - Liga División Honor Catalana Grupo 1</h2>
+      </div>
+      <div class="resultats-mask">
+      <div class="iframe-consent" 
+       data-src="https://www.fcf.cat/resultats/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1"
+       data-class="resultats-frame">
+      </div>
+      </div>
+    </section>
+
+    <!-- CLASSIFICACIÓ -->
+    <section class="section light">
+      <div class="section-header">
+        <h2>Clasificación - Liga División Honor Catalana Grupo 1</h2>
+      </div>
+      <div class="classificacio-mask">
+      <div class="iframe-consent" 
+       data-src="https://www.fcf.cat/classificacio/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1"
+       data-class="classificacio-frame">
+      </div>
+      </div>
+    </section>
+  </div>
+<div id="sponsors-container"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; <span id="any-actual"></span> Futbol Sala Parets</p>
+
+    <a class="footer-ajuntament" href="https://www.parets.cat/" target="_blank" rel="noopener">
+      <img src="img/Ajuntament-Parets-BN.png" alt="Ajuntament de Parets del Vallès">
+    </a>
+  </div>
+</footer>
+
+<script>
+  // Any actual al peu
+  const any = document.getElementById('any-actual');
+  if (any) {
+    any.textContent = new Date().getFullYear();
+  }
+</script>
+  
+<script src="js/carrusel.js"></script>
+<script src="js/cookies.js"></script>
+<script src="js/header.js"></script>
+  
+<script>
+const lang = document.documentElement.lang || "ca";
+
+/* HEADER */
+fetch(lang === "es" 
+  ? "components/header-es.html" 
+  : "components/header-cat.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("header-container").innerHTML = data;
+
+    setTimeout(() => {
+      initHeader();
+    }, 50);
+  });
+
+/* SPONSORS */
+fetch("components/sponsors.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sponsors-container").innerHTML = data;
+
+    setTimeout(() => {
+      initCarousel();
+    }, 50);
+  });
+</script>
+
+<div id="cookie-banner" style="position:fixed;bottom:0;width:100%;background:#000;color:#fff;padding:15px;text-align:center;z-index:9999;display:none;">
+  Esta web utiliza cookies para mostrar contenido externo.
+  <button onclick="acceptarCookies()">Aceptar</button>
+  <button onclick="rebutjarCookies()">Rechazar</button>
+</div>
+  
+</body>
+</html>
