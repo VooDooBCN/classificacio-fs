@@ -113,7 +113,10 @@ app.get("/api/resultats", async (req, res) => {
 
 $("tbody tr").each((i, el) => {
 
-  const text = $(el).text().replace(/\s+/g, " ").trim();
+  const text = $(el)
+  .text()
+  .replace(/\s+/g, " ")   // 👈 elimina \n \t etc
+  .trim();
   const tds = $(el).find("td");
 
   if (tds.length < 3) return;
@@ -132,13 +135,12 @@ $("tbody tr").each((i, el) => {
   // 🔥 HORA (21:45)
   const horaMatch = text.match(/\d{2}:\d{2}/);
 
-  partits.push({
-    local,
-    visitant,
-    resultat: resultatMatch ? resultatMatch[0] : "",
-    data: dataMatch ? dataMatch[0] : "",
-    hora: horaMatch ? horaMatch[0] : ""
-  });
+partits.push({
+  local,
+  visitant,
+  resultat: resultatMatch ? resultatMatch[0] : "",
+  data: dataMatch ? dataMatch[0].slice(0, 5) : "",   // 👈 IMPORTANT
+  hora: horaMatch ? horaMatch[0] : ""               // 👈 IMPORTANT
 });
 
     // 👉 només guardar si hi ha dades
