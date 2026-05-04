@@ -80,6 +80,51 @@ app.get("/api/classificacio", async (req, res) => {
   }
 });
 
+app.get("/api/resultats", async (req, res) => {
+
+  const url = req.query.url;
+
+  if (!url) {
+    return res.status(400).json({ error: "Falta URL" });
+  }
+
+  if (!url.includes("fcf.cat")) {
+    return res.status(403).json({ error: "URL no permesa" });
+  }
+
+  try {
+    const { data } = await axios.get(url);
+    const $ = cheerio.load(data);
+
+    let partits = [];
+
+    $("table tbody tr").each((i, el) => {
+
+      const tds = $(el).find("td");
+
+      if (tds.length < 3) return;
+
+      const local = $(tds[0]).text().trim();
+      const resultat = $(tds[1]).text().trim();
+      const visitant = $(tds[2]).text().trim();
+
+      if (!local || !visitant) return;
+
+      partits.push({
+        local,
+        visitant,
+        resultat
+      });
+    });
+
+    res.json(partits);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error obtenint resultats" });
+  }
+});
+
 // ROOT
 app.get("/", (req, res) => {
   res.send("API classificació activa 🚀");
