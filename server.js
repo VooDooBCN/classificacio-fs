@@ -113,19 +113,28 @@ app.get("/api/resultats", async (req, res) => {
 
 $("tbody tr").each((i, el) => {
 
-  const tds = $(el).find("td");
+  const text = $(el).text().replace(/\s+/g, " ").trim();
 
-  if (tds.length < 5) return;
+  const tds = $(el).find("td");
+  if (tds.length < 3) return;
 
   const local = $(tds[1]).text().trim();
-  const resultat = $(tds[2]).text().trim();
   const visitant = $(tds[3]).text().trim();
 
-  // ignorar files rares
-  if (!local || !visitant) return;
+  // 🔥 extreure resultat amb regex
+  const match = text.match(/\d+\s*-\s*\d+/);
 
-  // ignorar "ACTA TANCADA"
-  if (!resultat.includes("-")) return;
+  let resultat = "";
+
+  if (match) {
+    resultat = match[0];
+  } else {
+    // pot ser partit futur (hora)
+    const hora = text.match(/\d{2}:\d{2}/);
+    resultat = hora ? hora[0] : "";
+  }
+
+  if (!local || !visitant) return;
 
   partits.push({
     local,
