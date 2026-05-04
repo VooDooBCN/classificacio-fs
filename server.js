@@ -72,6 +72,9 @@ app.get("/api/classificacio", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Servidor corrent a http://localhost:3000");
+// 👇 això al final del fitxer
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Servidor corrent al port " + PORT);
 });
