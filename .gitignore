@@ -1,0 +1,7 @@
+node_modules/
+img/
+OLD/
+*.html
+*.css
+*.png
+*.jpg
