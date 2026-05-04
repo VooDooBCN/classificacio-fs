@@ -6,23 +6,26 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-// 🔥 LLIGUES
-const URLS = {
-  masculi: "https://www.fcf.cat/classificacio/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1",
-  femeni: "https://www.fcf.cat/classificacio/2526/futbol-sala-femeni/lliga-primera-divisio-femeni-futbol-sala/bcn-gr-1"
-};
-
-// 🔥 CACHE per cada lliga
+// 🔥 CACHE
 let cache = {};
 let lastFetch = {};
 
-// 🔥 ENDPOINT DINÀMIC
 app.get("/api/classificacio", async (req, res) => {
 
   const url = req.query.url;
 
   if (!url) {
     return res.status(400).json({ error: "Falta URL" });
+  }
+
+  // 🔒 SEGURETAT
+  if (!url.includes("fcf.cat")) {
+    return res.status(403).json({ error: "URL no permesa" });
+  }
+
+  // 🔥 CACHE
+  if (cache[url] && Date.now() - (lastFetch[url] || 0) < 60000) {
+    return res.json(cache[url]);
   }
 
   try {
@@ -65,6 +68,10 @@ app.get("/api/classificacio", async (req, res) => {
       });
     });
 
+    // 👉 guardar cache
+    cache[url] = equips;
+    lastFetch[url] = Date.now();
+
     res.json(equips);
 
   } catch (err) {
@@ -73,12 +80,12 @@ app.get("/api/classificacio", async (req, res) => {
   }
 });
 
-// 👇 ROOT (opcional)
+// ROOT
 app.get("/", (req, res) => {
   res.send("API classificació activa 🚀");
 });
 
-// 👇 PORT (Render)
+// PORT
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
