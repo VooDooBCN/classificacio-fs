@@ -114,32 +114,30 @@ app.get("/api/resultats", async (req, res) => {
 $("tbody tr").each((i, el) => {
 
   const text = $(el).text().replace(/\s+/g, " ").trim();
-
   const tds = $(el).find("td");
+
   if (tds.length < 3) return;
 
   const local = $(tds[1]).text().trim();
   const visitant = $(tds[3]).text().trim();
 
-  // 🔥 extreure resultat amb regex
-  const match = text.match(/\d+\s*-\s*\d+/);
-
-  let resultat = "";
-
-  if (match) {
-    resultat = match[0];
-  } else {
-    // pot ser partit futur (hora)
-    const hora = text.match(/\d{2}:\d{2}/);
-    resultat = hora ? hora[0] : "";
-  }
-
   if (!local || !visitant) return;
+
+  // 🔥 RESULTAT (6 - 1)
+  const resultatMatch = text.match(/\d+\s*-\s*\d+/);
+
+  // 🔥 DATA (07-05-2026)
+  const dataMatch = text.match(/\d{2}-\d{2}-\d{4}/);
+
+  // 🔥 HORA (21:45)
+  const horaMatch = text.match(/\d{2}:\d{2}/);
 
   partits.push({
     local,
-    resultat,
-    visitant
+    visitant,
+    resultat: resultatMatch ? resultatMatch[0] : "",
+    data: dataMatch ? dataMatch[0] : "",
+    hora: horaMatch ? horaMatch[0] : ""
   });
 });
 
