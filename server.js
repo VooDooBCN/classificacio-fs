@@ -113,34 +113,36 @@ app.get("/api/resultats", async (req, res) => {
 
 $("tbody tr").each((i, el) => {
 
-  const text = $(el)
-  .text()
-  .replace(/\s+/g, " ")   // 👈 elimina \n \t etc
-  .trim();
   const tds = $(el).find("td");
 
-  if (tds.length < 3) return;
+  if (tds.length < 4) return;
 
   const local = $(tds[1]).text().trim();
+  const resultatText = $(tds[2]).text().trim();
   const visitant = $(tds[3]).text().trim();
 
   if (!local || !visitant) return;
 
-  // 🔥 RESULTAT (6 - 1)
-  const resultatMatch = text.match(/\d+\s*-\s*\d+/);
+  // 🔥 marcador (6 - 1)
+  const resultatMatch = resultatText.match(/\d+\s*-\s*\d+/);
 
-  // 🔥 DATA (07-05-2026)
-  const dataMatch = text.match(/\d{2}-\d{2}-\d{4}/);
+  // 🔥 última columna (data + hora)
+  const extra = $(tds.last())
+    .text()
+    .replace(/\s+/g, " ")
+    .trim();
 
-  // 🔥 HORA (21:45)
-  const horaMatch = text.match(/\d{2}:\d{2}/);
+  const dataMatch = extra.match(/\d{2}-\d{2}-\d{4}/);
+  const horaMatch = extra.match(/\b\d{1,2}:\d{2}\b/);
 
-partits.push({
-  local,
-  visitant,
-  resultat: resultatMatch ? resultatMatch[0] : "",
-  data: dataMatch ? dataMatch[0].slice(0, 5) : "",   // 👈 IMPORTANT
-  hora: horaMatch ? horaMatch[0] : ""               // 👈 IMPORTANT
+  partits.push({
+    local,
+    visitant,
+    resultat: resultatMatch ? resultatMatch[0] : "",
+    data: dataMatch ? dataMatch[0].slice(0, 5) : "",
+    hora: horaMatch ? horaMatch[0] : ""
+  });
+
 });
 
     // 👉 només guardar si hi ha dades
