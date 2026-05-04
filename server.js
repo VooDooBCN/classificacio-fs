@@ -6,17 +6,32 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-const URL = "https://www.fcf.cat/classificacio/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1";
+// 🔥 LLIGUES
+const URLS = {
+  masculi: "https://www.fcf.cat/classificacio/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1",
+  femeni: "https://www.fcf.cat/classificacio/2526/futbol-sala-femeni/lliga-primera-divisio-femeni-futbol-sala/bcn-gr-1"
+};
 
-// 🔥 CACHE
-let cache = [];
-let lastFetch = 0;
+// 🔥 CACHE per cada lliga
+let cache = {};
+let lastFetch = {};
 
-app.get("/api/classificacio", async (req, res) => {
+// 🔥 ENDPOINT DINÀMIC
+app.get("/api/classificacio/:lliga", async (req, res) => {
 
-  // 👉 si fa menys de 60s, retorna cache
-  if (Date.now() - lastFetch < 60000 && cache.length > 0) {
-    return res.json(cache);
+  const lliga = req.params.lliga;
+  const URL = URLS[lliga];
+
+  if (!URL) {
+    return res.status(404).json({ error: "Lliga no trobada" });
+  }
+
+  // 👉 cache per lliga
+  if (
+    cache[lliga] &&
+    Date.now() - (lastFetch[lliga] || 0) < 60000
+  ) {
+    return res.json(cache[lliga]);
   }
 
   try {
@@ -56,13 +71,13 @@ app.get("/api/classificacio", async (req, res) => {
         p: nums[5],
         f: nums[nums.length - 3],
         c: nums[nums.length - 2],
-        logo: escut   // 👈 AFEGIT
+        logo: escut
       });
     });
 
-    // 👉 guardar cache
-    cache = equips;
-    lastFetch = Date.now();
+    // 👉 guardar cache per lliga
+    cache[lliga] = equips;
+    lastFetch[lliga] = Date.now();
 
     res.json(equips);
 
@@ -72,7 +87,12 @@ app.get("/api/classificacio", async (req, res) => {
   }
 });
 
-// 👇 això al final del fitxer
+// 👇 ROOT (opcional)
+app.get("/", (req, res) => {
+  res.send("API classificació activa 🚀");
+});
+
+// 👇 PORT (Render)
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
