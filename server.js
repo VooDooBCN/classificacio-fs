@@ -111,54 +111,65 @@ app.get("/api/resultats", async (req, res) => {
 
     let partits = [];
 
-$("tbody tr").each((i, el) => {
+    $("tbody tr").each((i, el) => {
 
-  const tds = $(el).find("td");
+      const tds = $(el).find("td");
 
-  if (tds.length < 3) return;
+      if (tds.length < 3) return;
 
-  const local = $(tds[1]).text().trim();
-  const visitant = $(tds[3]) ? $(tds[3]).text().trim() : "";
+      const local = $(tds[1]).text().trim();
+      const visitant = $(tds[3]) ? $(tds[3]).text().trim() : "";
 
-  if (!local || !visitant) return;
+      if (!local || !visitant) return;
 
-  let resultat = "";
-  let data = "";
-  let hora = "";
+      // 🔥 NOU — LOGOS
+      const imgLocal = $(tds[1]).find("img").attr("src");
+      const imgVisitant = $(tds[3]).find("img").attr("src");
 
-tds.each((i, td) => {
-  const txt = $(td).text().replace(/\s+/g, " ").trim();
+      let logoLocal = "";
+      let logoVisitant = "";
 
-  // 🔥 RESULTAT (extreu només 6 - 1)
-  const resMatch = txt.match(/\d+\s*-\s*\d+/);
-  if (resMatch) {
-    resultat = resMatch[0];
-  }
+      if (imgLocal) {
+        logoLocal = imgLocal.startsWith("http")
+          ? imgLocal
+          : "https://www.fcf.cat" + imgLocal;
+      }
 
-  // 🔥 DATA (07-05-2026 → 07-05)
-  const dataMatch = txt.match(/\d{2}-\d{2}-\d{4}/);
-  if (dataMatch) {
-    data = dataMatch[0].slice(0, 5);
-  }
+      if (imgVisitant) {
+        logoVisitant = imgVisitant.startsWith("http")
+          ? imgVisitant
+          : "https://www.fcf.cat" + imgVisitant;
+      }
 
-  // 🔥 HORA (21:45)
-  const horaMatch = txt.match(/\b\d{1,2}:\d{2}\b/);
-  if (horaMatch) {
-    hora = horaMatch[0];
-  }
-});
+      let resultat = "";
+      let data = "";
+      let hora = "";
 
-  partits.push({
-    local,
-    visitant,
-    resultat,
-    data,
-    hora
-  });
+      tds.each((i, td) => {
+        const txt = $(td).text().replace(/\s+/g, " ").trim();
 
-});
-    
-    // 👉 només guardar si hi ha dades
+        const resMatch = txt.match(/\d+\s*-\s*\d+/);
+        if (resMatch) resultat = resMatch[0];
+
+        const dataMatch = txt.match(/\d{2}-\d{2}-\d{4}/);
+        if (dataMatch) data = dataMatch[0].slice(0, 5);
+
+        const horaMatch = txt.match(/\b\d{1,2}:\d{2}\b/);
+        if (horaMatch) hora = horaMatch[0];
+      });
+
+      partits.push({
+        local,
+        visitant,
+        resultat,
+        data,
+        hora,
+        logoLocal,     // 👈 AFEGIT
+        logoVisitant   // 👈 AFEGIT
+      });
+
+    });
+
     if (partits.length > 0) {
       cacheRes[url] = partits;
       lastFetchRes[url] = Date.now();
