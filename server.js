@@ -65,6 +65,8 @@ equips.push({
   team: clean[1],
 
   pts: clean[2],
+  coef: clean[3],   // 👈 NOU
+
   j: clean[4],
   g: clean[5],
   e: clean[6],
