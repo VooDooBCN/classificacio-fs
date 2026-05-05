@@ -62,20 +62,23 @@ app.get("/api/classificacio", async (req, res) => {
           : "https://www.fcf.cat" + img;
       }
 
-      equips.push({
-        pos: clean[0],
-        team: clean[1],
+equips.push({
+  pos: clean[0],
+  team: clean[1],
 
-        pts: clean[3],
-        coef: clean[4],
-        j: clean[5],
-        g: clean[6],
-        e: clean[7],
-        p: clean[8],
-        f: clean[nums.length - 3],
-        c: clean[nums.length - 2],
-        logo: escut
-      });
+  pts: nums[1],
+  coef: nums[2],   // 👈 NOU
+
+  j: nums[3],
+  g: nums[4],
+  e: nums[5],
+  p: nums[6],
+
+  f: nums[nums.length - 3],
+  c: nums[nums.length - 2],
+
+  logo: escut
+});
 
     });
 
