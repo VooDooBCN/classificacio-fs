@@ -76,8 +76,8 @@ $("table tbody tr").each((i, el) => {
     e: nums[5],
     p: nums[6],
 
-    f: nums[nums.length - 2],
-    c: nums[nums.length - 1],
+    f: nums[nums.length - 3],
+    c: nums[nums.length - 2],
 
     logo: escut
   });
