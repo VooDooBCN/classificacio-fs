@@ -66,15 +66,14 @@ app.get("/api/classificacio", async (req, res) => {
         pos: clean[0],
         team: clean[1],
 
-        pts: clean[2],
-        coef: clean[3],
-
-        j: clean[4],
-        g: clean[5],
-        e: clean[6],
-        p: clean[7],
-        f: clean[8],
-        c: clean[9],
+        pts: clean[3],
+        coef: clean[4],
+        j: clean[5],
+        g: clean[6],
+        e: clean[7],
+        p: clean[8],
+        f: clean[9],
+        c: clean[10],
 
         logo: escut
       });
