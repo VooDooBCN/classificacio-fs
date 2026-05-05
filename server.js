@@ -115,10 +115,10 @@ $("tbody tr").each((i, el) => {
 
   const tds = $(el).find("td");
 
-  if (tds.length < 4) return;
+  if (tds.length < 3) return;
 
   const local = $(tds[1]).text().trim();
-  const visitant = $(tds[3]).text().trim();
+  const visitant = $(tds[tds.length - 1]).text().trim();
 
   if (!local || !visitant) return;
 
@@ -126,20 +126,23 @@ $("tbody tr").each((i, el) => {
   let data = "";
   let hora = "";
 
+  // 🔥 recórrer totes les columnes
   tds.each((i, td) => {
     const txt = $(td).text().replace(/\s+/g, " ").trim();
 
-    if (/^\d+\s*-\s*\d+$/.test(txt)) {
-      resultat = txt;
+    // marcador
+    if (/\d+\s*-\s*\d+/.test(txt)) {
+      resultat = txt.match(/\d+\s*-\s*\d+/)[0];
     }
-    else if (/^\d{2}-\d{2}-\d{4}$/.test(txt)) {
+
+    // data
+    if (/\d{2}-\d{2}-\d{4}/.test(txt)) {
       data = txt.slice(0, 5);
     }
-    else if (/^\d{2}-\d{2}$/.test(txt)) {
-      data = txt;
-    }
-    else if (/^\d{1,2}:\d{2}$/.test(txt)) {
-      hora = txt;
+
+    // hora
+    if (/\b\d{1,2}:\d{2}\b/.test(txt)) {
+      hora = txt.match(/\b\d{1,2}:\d{2}\b/)[0];
     }
   });
 
