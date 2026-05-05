@@ -48,31 +48,29 @@ app.get("/api/classificacio", async (req, res) => {
 
       if (!clean[1]) return;
 
-      const nums = clean
-      .filter(c => /^\d+$/.test(c))
-      .slice(1); // 👈 elimina la posició
-      if (nums.length < 6) return;
+if (clean.length < 10) return;
 
-      const img = $(el).find("img").attr("src");
+const img = $(el).find("img").attr("src");
 
-      let escut = "";
-      if (img) {
-        escut = img.startsWith("http")
-          ? img
-          : "https://www.fcf.cat" + img;
-      }
+let escut = "";
 
-      equips.push({
+if (img) {
+  escut = img.startsWith("http")
+    ? img
+    : "https://www.fcf.cat" + img;
+}
+
+equips.push({
   pos: clean[0],
   team: clean[1],
 
-  pts: nums[0],
-  j: nums[2],
-  g: nums[3],
-  e: nums[4],
-  p: nums[5],
-  f: nums[6],
-  c: nums[7],
+  pts: clean[2],
+  j: clean[4],
+  g: clean[5],
+  e: clean[6],
+  p: clean[7],
+  f: clean[8],
+  c: clean[9],
 
   logo: escut
 });
