@@ -118,9 +118,7 @@ $("tbody tr").each((i, el) => {
   if (tds.length < 3) return;
 
   const local = $(tds[1]).text().trim();
-  const col2 = $(tds[2]).text().replace(/\s+/g, " ").trim();
   const visitant = $(tds[3]) ? $(tds[3]).text().trim() : "";
-  const colExtra = $(tds[4]) ? $(tds[4]).text().replace(/\s+/g, " ").trim() : "";
 
   if (!local || !visitant) return;
 
@@ -128,20 +126,30 @@ $("tbody tr").each((i, el) => {
   let data = "";
   let hora = "";
 
-  // 🔥 RESULTAT (molt més flexible)
-  if (col2.includes("-") && col2.match(/\d/)) {
-    resultat = col2;
-  }
+  tds.each((i, td) => {
+    const txt = $(td).text().replace(/\s+/g, " ").trim();
 
-  // 🔥 DATA (ex: 07-05 o 07-05-2026)
-  else if (col2.includes("-")) {
-    data = col2.slice(0, 5);
-  }
+    // 🔥 RESULTAT (buscar a qualsevol columna)
+    const matchRes = txt.match(/\d+\s*-\s*\d+/);
+    if (matchRes) {
+      resultat = matchRes[0];
+    }
 
-  // 🔥 HORA (sempre a colExtra)
-  if (colExtra.includes(":")) {
-    hora = colExtra;
-  }
+    // 🔥 DATA
+    if (txt.match(/\d{2}-\d{2}-\d{4}/)) {
+      data = txt.slice(0, 5);
+    }
+
+    if (txt.match(/^\d{2}-\d{2}$/)) {
+      data = txt;
+    }
+
+    // 🔥 HORA
+    const matchHora = txt.match(/\b\d{1,2}:\d{2}\b/);
+    if (matchHora) {
+      hora = matchHora[0];
+    }
+  });
 
   partits.push({
     local,
