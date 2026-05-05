@@ -128,18 +128,18 @@ $("tbody tr").each((i, el) => {
   let data = "";
   let hora = "";
 
-  // 🔥 si hi ha marcador
-  if (/^\d+\s*-\s*\d+$/.test(col2)) {
+  // 🔥 RESULTAT (molt més flexible)
+  if (col2.includes("-") && col2.match(/\d/)) {
     resultat = col2;
   }
 
-  // 🔥 si és data
-  else if (/^\d{2}-\d{2}/.test(col2)) {
+  // 🔥 DATA (ex: 07-05 o 07-05-2026)
+  else if (col2.includes("-")) {
     data = col2.slice(0, 5);
   }
 
-  // 🔥 hora (sempre va a l'última columna)
-  if (/^\d{1,2}:\d{2}$/.test(colExtra)) {
+  // 🔥 HORA (sempre a colExtra)
+  if (colExtra.includes(":")) {
     hora = colExtra;
   }
 
