@@ -115,43 +115,32 @@ $("tbody tr").each((i, el) => {
 
   const tds = $(el).find("td");
 
-  if (tds.length < 3) return;
+  if (tds.length < 4) return;
 
   const local = $(tds[1]).text().trim();
-  const visitant = $(tds[tds.length - 1]).text().trim();
+  const resultatText = $(tds[2]).text().trim();
+  const visitant = $(tds[3]).text().trim();
 
   if (!local || !visitant) return;
 
-  let resultat = "";
-  let data = "";
-  let hora = "";
+  // 🔥 marcador (6 - 1)
+  const resultatMatch = resultatText.match(/\d+\s*-\s*\d+/);
 
-  // 🔥 recórrer totes les columnes
-  tds.each((i, td) => {
-    const txt = $(td).text().replace(/\s+/g, " ").trim();
+  // 🔥 última columna (data + hora)
+  const extra = $(tds.last())
+    .text()
+    .replace(/\s+/g, " ")
+    .trim();
 
-    // marcador
-    if (/\d+\s*-\s*\d+/.test(txt)) {
-      resultat = txt.match(/\d+\s*-\s*\d+/)[0];
-    }
-
-    // data
-    if (/\d{2}-\d{2}-\d{4}/.test(txt)) {
-      data = txt.slice(0, 5);
-    }
-
-    // hora
-    if (/\b\d{1,2}:\d{2}\b/.test(txt)) {
-      hora = txt.match(/\b\d{1,2}:\d{2}\b/)[0];
-    }
-  });
+  const dataMatch = extra.match(/\d{2}-\d{2}-\d{4}/);
+  const horaMatch = extra.match(/\b\d{1,2}:\d{2}\b/);
 
   partits.push({
     local,
     visitant,
-    resultat,
-    data,
-    hora
+    resultat: resultatMatch ? resultatMatch[0] : "",
+    data: dataMatch ? dataMatch[0].slice(0, 5) : "",
+    hora: horaMatch ? horaMatch[0] : ""
   });
 
 });
