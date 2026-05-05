@@ -118,37 +118,30 @@ $("tbody tr").each((i, el) => {
   if (tds.length < 3) return;
 
   const local = $(tds[1]).text().trim();
-  const visitant = tds[3] ? $(tds[3]).text().trim() : "";
+  const col2 = $(tds[2]).text().replace(/\s+/g, " ").trim();
+  const visitant = $(tds[3]) ? $(tds[3]).text().trim() : "";
+  const colExtra = $(tds[4]) ? $(tds[4]).text().replace(/\s+/g, " ").trim() : "";
 
-  if (!local) return;
+  if (!local || !visitant) return;
 
   let resultat = "";
   let data = "";
   let hora = "";
 
-  tds.each((i, td) => {
-    const txt = $(td).text().replace(/\s+/g, " ").trim();
+  // 🔥 si hi ha marcador
+  if (/^\d+\s*-\s*\d+$/.test(col2)) {
+    resultat = col2;
+  }
 
-    // marcador real
-    if (/^\d+\s*-\s*\d+$/.test(txt)) {
-      resultat = txt;
-    }
+  // 🔥 si és data
+  else if (/^\d{2}-\d{2}/.test(col2)) {
+    data = col2.slice(0, 5);
+  }
 
-    // data completa
-    else if (/^\d{2}-\d{2}-\d{4}$/.test(txt)) {
-      data = txt.slice(0, 5);
-    }
-
-    // data curta
-    else if (/^\d{2}-\d{2}$/.test(txt)) {
-      data = txt;
-    }
-
-    // hora
-    else if (/^\d{1,2}:\d{2}$/.test(txt)) {
-      hora = txt;
-    }
-  });
+  // 🔥 hora (sempre va a l'última columna)
+  if (/^\d{1,2}:\d{2}$/.test(colExtra)) {
+    hora = colExtra;
+  }
 
   partits.push({
     local,
