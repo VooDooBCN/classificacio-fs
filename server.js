@@ -123,24 +123,20 @@ app.get("/api/resultats", async (req, res) => {
       if (!local || !visitant) return;
 
       // 🔥 NOU — LOGOS
-      const imgLocal = $(tds[1]).find("img").attr("src");
-      const imgVisitant = $(tds[3]).find("img").attr("src");
+      const imgs = $(el).find("img");
 
-      let logoLocal = "";
-      let logoVisitant = "";
+let logoLocal = "";
+let logoVisitant = "";
 
-      if (imgLocal) {
-        logoLocal = imgLocal.startsWith("http")
-          ? imgLocal
-          : "https://www.fcf.cat" + imgLocal;
-      }
+if (imgs.eq(0).attr("src")) {
+  const src = imgs.eq(0).attr("src");
+  logoLocal = src.startsWith("http") ? src : "https://www.fcf.cat" + src;
+}
 
-      if (imgVisitant) {
-        logoVisitant = imgVisitant.startsWith("http")
-          ? imgVisitant
-          : "https://www.fcf.cat" + imgVisitant;
-      }
-
+if (imgs.eq(1).attr("src")) {
+  const src = imgs.eq(1).attr("src");
+  logoVisitant = src.startsWith("http") ? src : "https://www.fcf.cat" + src;
+}
       let resultat = "";
       let data = "";
       let hora = "";
