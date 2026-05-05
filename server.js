@@ -72,8 +72,8 @@ app.get("/api/classificacio", async (req, res) => {
         g: clean[6],
         e: clean[7],
         p: clean[8],
-        f: clean[9],
-        c: clean[10],
+        f: clean[clean.length - 2],
+        c: clean[clean.length - 1],
 
         logo: escut
       });
