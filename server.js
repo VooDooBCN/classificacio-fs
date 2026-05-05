@@ -48,7 +48,9 @@ app.get("/api/classificacio", async (req, res) => {
 
       if (!clean[1]) return;
 
-      const nums = clean.filter(c => /^\d+$/.test(c));
+      const nums = clean
+      .filter(c => /^\d+$/.test(c))
+      .slice(1); // 👈 elimina la posició
       if (nums.length < 6) return;
 
       const img = $(el).find("img").attr("src");
