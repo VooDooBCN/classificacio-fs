@@ -126,30 +126,27 @@ $("tbody tr").each((i, el) => {
   let data = "";
   let hora = "";
 
-  tds.each((i, td) => {
-    const txt = $(td).text().replace(/\s+/g, " ").trim();
+tds.each((i, td) => {
+  const txt = $(td).text().replace(/\s+/g, " ").trim();
 
-    // 🔥 RESULTAT (buscar a qualsevol columna)
-    const matchRes = txt.match(/\d+\s*-\s*\d+/);
-    if (matchRes) {
-      resultat = matchRes[0];
-    }
+  // 🔥 RESULTAT (extreu només 6 - 1)
+  const resMatch = txt.match(/\d+\s*-\s*\d+/);
+  if (resMatch) {
+    resultat = resMatch[0];
+  }
 
-    // 🔥 DATA
-    if (txt.match(/\d{2}-\d{2}-\d{4}/)) {
-      data = txt.slice(0, 5);
-    }
+  // 🔥 DATA (07-05-2026 → 07-05)
+  const dataMatch = txt.match(/\d{2}-\d{2}-\d{4}/);
+  if (dataMatch) {
+    data = dataMatch[0].slice(0, 5);
+  }
 
-    if (txt.match(/^\d{2}-\d{2}$/)) {
-      data = txt;
-    }
-
-    // 🔥 HORA
-    const matchHora = txt.match(/\b\d{1,2}:\d{2}\b/);
-    if (matchHora) {
-      hora = matchHora[0];
-    }
-  });
+  // 🔥 HORA (21:45)
+  const horaMatch = txt.match(/\b\d{1,2}:\d{2}\b/);
+  if (horaMatch) {
+    hora = horaMatch[0];
+  }
+});
 
   partits.push({
     local,
