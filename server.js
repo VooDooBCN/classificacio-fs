@@ -39,48 +39,50 @@ app.get("/api/classificacio", async (req, res) => {
 
     let equips = [];
 
-    $("table tbody tr").each((i, el) => {
+$("table tbody tr").each((i, el) => {
 
-      const tds = $(el).find("td");
+  const tds = $(el).find("td");
 
-      const cols = tds.map((i, td) => $(td).text().trim()).get();
-      const clean = cols.filter(c => c !== "");
+  const cols = tds.map((i, td) => $(td).text().trim()).get();
+  const clean = cols.filter(c => c !== "");
 
-      if (!clean[1]) return;
+  if (!clean[1]) return;
 
-      // 🔥 evitar files incorrectes
-      if (clean.length < 10) return;
+  // 🔥 nums
+  const nums = clean.filter(c => /^\d+$/.test(c));
 
-      // 🔥 ESCUT
-      const img = $(el).find("img").attr("src");
+  if (nums.length < 8) return;
 
-      let escut = "";
+  // 🔥 ESCUT
+  const img = $(el).find("img").attr("src");
 
-      if (img) {
-        escut = img.startsWith("http")
-          ? img
-          : "https://www.fcf.cat" + img;
-      }
+  let escut = "";
 
-equips.push({
-  pos: clean[0],
-  team: clean[1],
+  if (img) {
+    escut = img.startsWith("http")
+      ? img
+      : "https://www.fcf.cat" + img;
+  }
 
-  pts: nums[1],
-  coef: nums[2],   // 👈 NOU
+  equips.push({
+    pos: clean[0],
+    team: clean[1],
 
-  j: nums[3],
-  g: nums[4],
-  e: nums[5],
-  p: nums[6],
+    pts: nums[1],
+    coef: nums[2],
 
-  f: nums[nums.length - 3],
-  c: nums[nums.length - 2],
+    j: nums[3],
+    g: nums[4],
+    e: nums[5],
+    p: nums[6],
 
-  logo: escut
+    f: nums[nums.length - 2],
+    c: nums[nums.length - 1],
+
+    logo: escut
+  });
+
 });
-
-    });
 
     cacheClass[url] = equips;
     lastFetchClass[url] = Date.now();
