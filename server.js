@@ -115,12 +115,12 @@ $("tbody tr").each((i, el) => {
 
   const tds = $(el).find("td");
 
-  if (tds.length < 4) return;
+  if (tds.length < 3) return;
 
   const local = $(tds[1]).text().trim();
-  const visitant = $(tds[3]).text().trim();
+  const visitant = tds[3] ? $(tds[3]).text().trim() : "";
 
-  if (!local || !visitant) return;
+  if (!local) return;
 
   let resultat = "";
   let data = "";
@@ -129,15 +129,22 @@ $("tbody tr").each((i, el) => {
   tds.each((i, td) => {
     const txt = $(td).text().replace(/\s+/g, " ").trim();
 
+    // marcador real
     if (/^\d+\s*-\s*\d+$/.test(txt)) {
       resultat = txt;
     }
+
+    // data completa
     else if (/^\d{2}-\d{2}-\d{4}$/.test(txt)) {
       data = txt.slice(0, 5);
     }
+
+    // data curta
     else if (/^\d{2}-\d{2}$/.test(txt)) {
       data = txt;
     }
+
+    // hora
     else if (/^\d{1,2}:\d{2}$/.test(txt)) {
       hora = txt;
     }
@@ -152,7 +159,7 @@ $("tbody tr").each((i, el) => {
   });
 
 });
-
+    
     // 👉 només guardar si hi ha dades
     if (partits.length > 0) {
       cacheRes[url] = partits;
