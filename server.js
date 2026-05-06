@@ -34,64 +34,66 @@ app.get("/api/classificacio", async (req, res) => {
   }
 
   try {
+
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
     let equips = [];
 
-$("table tbody tr").each((i, el) => {
+    $("table tbody tr").each((i, el) => {
 
-  const tds = $(el).find("td");
+      const tds = $(el).find("td");
 
-  const cols = tds.map((i, td) => $(td).text().trim()).get();
-  const clean = cols.filter(c => c !== "");
+      const cols = tds.map((i, td) => $(td).text().trim()).get();
 
-  if (!clean[1]) return;
+      const clean = cols.filter(c => c !== "");
 
-  // 🔥 nums
-  const nums = clean.filter(c => /^\d+$/.test(c));
+      if (!clean[1]) return;
 
-  if (nums.length < 8) return;
+      // 🔥 només números i elimina la posició
+      const nums = clean
+        .filter(c => /^\d+$/.test(c))
+        .slice(1);
 
-  // 🔥 ESCUT
-  const img = $(el).find("img").attr("src");
+      // mínim necessari
+      if (nums.length < 7) return;
 
-  let escut = "";
+      // 🔥 detectar coeficient
+      const teCoeficient = nums.length >= 8;
 
-  if (img) {
-    escut = img.startsWith("http")
-      ? img
-      : "https://www.fcf.cat" + img;
-  }
+      // 🔥 ESCUT
+      const img = $(el).find("img").attr("src");
 
-const teCoeficient = nums.length >= 9;
+      let escut = "";
 
-equips.push({
+      if (img) {
+        escut = img.startsWith("http")
+          ? img
+          : "https://www.fcf.cat" + img;
+      }
 
-  pos: clean[0],
-  team: clean[1],
+      equips.push({
 
-  pts: nums[1],
+        pos: clean[0],
+        team: clean[1],
 
-  coef: teCoeficient ? nums[2] : "-",
+        pts: nums[0],
 
-  j: teCoeficient ? nums[3] : nums[2],
-  g: teCoeficient ? nums[4] : nums[3],
-  e: teCoeficient ? nums[5] : nums[4],
-  p: teCoeficient ? nums[6] : nums[5],
+        coef: teCoeficient ? nums[1] : "-",
 
-  f: teCoeficient
-    ? nums[nums.length - 3]
-    : nums[nums.length - 2],
+        j: teCoeficient ? nums[2] : nums[1],
+        g: teCoeficient ? nums[3] : nums[2],
+        e: teCoeficient ? nums[4] : nums[3],
+        p: teCoeficient ? nums[5] : nums[4],
 
-  c: teCoeficient
-    ? nums[nums.length - 2]
-    : nums[nums.length - 1],
+        f: teCoeficient ? nums[6] : nums[5],
+        c: teCoeficient ? nums[7] : nums[6],
 
-  logo: escut
+        logo: escut
 
-});
-}); // 👈 AQUEST FALTAVA
+      });
+
+    });
 
     cacheClass[url] = equips;
     lastFetchClass[url] = Date.now();
@@ -99,12 +101,14 @@ equips.push({
     res.json(equips);
 
   } catch (err) {
+
     console.error(err);
+
     res.status(500).json({ error: "Error obtenint dades" });
+
   }
+
 });
-
-
 // ===============================
 // ⚽ RESULTATS
 // ===============================
