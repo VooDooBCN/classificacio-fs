@@ -66,7 +66,7 @@ $("table tbody tr").each((i, el) => {
       : "https://www.fcf.cat" + img;
   }
 
-const teCoeficient = nums.length >= 9;
+const teCoeficient = nums.length >= 8;
 
 equips.push({
 
