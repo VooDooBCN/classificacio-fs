@@ -53,7 +53,7 @@ $("table tbody tr").each((i, el) => {
     .filter(c => /^\d+$/.test(c))
     .slice(1); // 👈 elimina la posició
 
-  if (nums.length < 8) return;
+  if (nums.length < 7) return;
 
   // 🔥 ESCUT
   const img = $(el).find("img").attr("src");
@@ -66,7 +66,11 @@ $("table tbody tr").each((i, el) => {
       : "https://www.fcf.cat" + img;
   }
 
-const teCoeficient = nums.length >= 8;
+const headers = $("table thead th")
+  .map((i, el) => $(el).text().trim().toLowerCase())
+  .get();
+
+const teCoeficient = headers.some(h => h.includes("coef"));
 
 equips.push({
 
