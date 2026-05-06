@@ -49,7 +49,9 @@ $("table tbody tr").each((i, el) => {
   if (!clean[1]) return;
 
   // 🔥 nums
-  const nums = clean.filter(c => /^\d+$/.test(c));
+  const nums = clean
+    .filter(c => /^\d+$/.test(c))
+    .slice(1); // 👈 elimina la posició
 
   if (nums.length < 8) return;
 
@@ -64,21 +66,23 @@ $("table tbody tr").each((i, el) => {
       : "https://www.fcf.cat" + img;
   }
 
-const teCoeficient = nums.length >= 9;
+const teCoeficient = nums.length >= 8;
 
 equips.push({
 
   pos: clean[0],
   team: clean[1],
 
-  pts: nums[1],
+  pts: nums[0],
 
-  coef: teCoeficient ? nums[2] : "-",
+  coef: teCoeficient ? nums[1] : "-",
 
-  j: teCoeficient ? nums[3] : nums[2],
-  g: teCoeficient ? nums[4] : nums[3],
-  e: teCoeficient ? nums[5] : nums[4],
-  p: teCoeficient ? nums[6] : nums[5],
+  j: teCoeficient ? nums[2] : nums[1],
+  g: teCoeficient ? nums[3] : nums[2],
+  e: teCoeficient ? nums[4] : nums[3],
+  p: teCoeficient ? nums[5] : nums[4],
+
+  // 🔥 GF i GC sempre al final
 
   f: teCoeficient
     ? nums[nums.length - 3]
