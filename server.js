@@ -90,11 +90,11 @@ equips.push({
 
   f: teCoeficient
     ? nums[nums.length - 3]
-    : nums[nums.length - 2],
+    : nums[nums.length - 3],
 
   c: teCoeficient
     ? nums[nums.length - 2]
-    : nums[nums.length - 1],
+    : nums[nums.length - 2],
 
   logo: escut
 
