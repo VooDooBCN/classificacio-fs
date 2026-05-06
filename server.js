@@ -64,7 +64,7 @@ $("table tbody tr").each((i, el) => {
       : "https://www.fcf.cat" + img;
   }
 
-const teCoeficient = nums.length >= 8;
+const teCoeficient = nums.length >= 9;
 
 equips.push({
 
@@ -91,6 +91,7 @@ equips.push({
   logo: escut
 
 });
+}); // 👈 AQUEST FALTAVA
 
     cacheClass[url] = equips;
     lastFetchClass[url] = Date.now();
