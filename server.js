@@ -66,7 +66,7 @@ $("table tbody tr").each((i, el) => {
       : "https://www.fcf.cat" + img;
   }
 
-const teCoeficient = nums.length >= 8;
+const teCoeficient = nums.length >= 9;
 
 equips.push({
 
@@ -83,8 +83,14 @@ equips.push({
   p: teCoeficient ? nums[5] : nums[4],
 
   // 🔥 GF i GC sempre al final
-  f: nums[nums.length - 2],
-  c: nums[nums.length - 1],
+
+  f: teCoeficient
+    ? nums[nums.length - 3]
+    : nums[nums.length - 2],
+
+  c: teCoeficient
+    ? nums[nums.length - 2]
+    : nums[nums.length - 1],
 
   logo: escut
 
