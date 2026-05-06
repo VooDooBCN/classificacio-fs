@@ -64,23 +64,31 @@ $("table tbody tr").each((i, el) => {
       : "https://www.fcf.cat" + img;
   }
 
-  equips.push({
-    pos: clean[0],
-    team: clean[1],
+const teCoeficient = nums.length >= 8;
 
-    pts: nums[1],
-    coef: nums[2],
+equips.push({
 
-    j: nums[3],
-    g: nums[4],
-    e: nums[5],
-    p: nums[6],
+  pos: clean[0],
+  team: clean[1],
 
-    f: nums[nums.length - 3],
-    c: nums[nums.length - 2],
+  pts: nums[1],
 
-    logo: escut
-  });
+  coef: teCoeficient ? nums[2] : "-",
+
+  j: teCoeficient ? nums[3] : nums[2],
+  g: teCoeficient ? nums[4] : nums[3],
+  e: teCoeficient ? nums[5] : nums[4],
+  p: teCoeficient ? nums[6] : nums[5],
+
+  f: teCoeficient
+    ? nums[nums.length - 3]
+    : nums[nums.length - 2],
+
+  c: teCoeficient
+    ? nums[nums.length - 2]
+    : nums[nums.length - 1],
+
+  logo: escut
 
 });
 
