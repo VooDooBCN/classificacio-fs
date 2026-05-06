@@ -162,8 +162,13 @@ app.get("/api/resultats", async (req, res) => {
         const txt = $(td).text().replace(/\s+/g, " ").trim();
 
         // 🔥 RESULTAT
-        const resMatch = txt.match(/\d+\s*-\s*\d+/);
-        if (resMatch) resultat = resMatch[0];
+        const resMatch = txt.match(/\b\d{1,2}\s*-\s*\d{1,2}\b/);
+        if (resMatch) {
+        // 🔥 evitar dates tipus 10-05
+        if (!txt.match(/\d{2}-\d{2}-\d{4}/)) {
+        resultat = resMatch[0];
+        }
+      }
 
         // 🔥 DATA
         const dataMatch = txt.match(/\d{2}-\d{2}-\d{4}/);
