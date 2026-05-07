@@ -48,6 +48,7 @@ $("table tbody tr").each((i, el) => {
 
   if (!clean[1]) return;
 
+console.log(clean);
   // 🔥 nums
 const nums = clean
   .filter(c => /^[\d.,]+$/.test(c))
@@ -66,11 +67,7 @@ const nums = clean
       : "https://www.fcf.cat" + img;
   }
 
-const headers = $("table thead th")
-  .map((i, el) => $(el).text().trim().toLowerCase())
-  .get();
-
-const teCoeficient = headers.some(h => h.includes("coef"));
+const teCoeficient = nums.length === 8;
 
 equips.push({
 
@@ -85,16 +82,8 @@ equips.push({
   g: teCoeficient ? nums[3] : nums[2],
   e: teCoeficient ? nums[4] : nums[3],
   p: teCoeficient ? nums[5] : nums[4],
-
-  // 🔥 GF i GC sempre al final
-
-  f: teCoeficient
-    ? nums[nums.length - 3]
-    : nums[nums.length - 3],
-
-  c: teCoeficient
-    ? nums[nums.length - 2]
-    : nums[nums.length - 2],
+  f: teCoeficient ? nums[6] : nums[5],
+  c: teCoeficient ? nums[7] : nums[6],
 
   logo: escut
 
