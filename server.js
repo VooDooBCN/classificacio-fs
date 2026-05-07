@@ -49,11 +49,9 @@ $("table tbody tr").each((i, el) => {
   if (!clean[1]) return;
 
   // 🔥 nums
-  const nums = clean
-     .filter(c => /\d/.test(c))
-     .slice(1);
-
-    console.log(nums);
+const nums = clean
+  .filter(c => /^[\d.,]+$/.test(c))
+  .slice(1);
 
   if (nums.length < 7) return;
 
