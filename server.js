@@ -50,8 +50,10 @@ $("table tbody tr").each((i, el) => {
 
   // 🔥 nums
   const nums = clean
-     .filter(c => /^\d+([.,]\d+)?$/.test(c))
+     .filter(c => /\d/.test(c))
      .slice(1);
+
+    console.log(nums);
 
   if (nums.length < 7) return;
 
