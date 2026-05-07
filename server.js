@@ -50,8 +50,8 @@ $("table tbody tr").each((i, el) => {
 
   // 🔥 nums
   const nums = clean
-    .filter(c => /^\d+$/.test(c))
-    .slice(1); // 👈 elimina la posició
+     .filter(c => /^\d+([.,]\d+)?$/.test(c))
+     .slice(1);
 
   if (nums.length < 7) return;
 
