@@ -48,7 +48,7 @@ const clean = cols.filter(c => c !== "");
 
 const nums = clean
   .filter(c => /^[\d.,]+$/.test(c))
-  .slice(1, 9);
+  .slice(0, 8);
 
 if (nums.length < 7) return;
 
