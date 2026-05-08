@@ -48,7 +48,7 @@ const clean = cols.filter(c => c !== "");
 
 const nums = clean
   .filter(c => /^[\d.,]+$/.test(c))
-  .slice(1, 10);
+  .slice(1);
 
 if (nums.length < 7) return;
 
@@ -64,7 +64,7 @@ if (img) {
 }
 
 // 🔥 detectem coeficient
-const teCoeficient = nums.length >= 8;
+const teCoeficient = nums[2] === nums[3];
 
 equips.push({
 
