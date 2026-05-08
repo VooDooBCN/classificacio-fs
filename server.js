@@ -65,8 +65,8 @@ if (img) {
 
 // 🔥 detectem coeficient
 const teCoeficient =
-  nums[1] &&
-  parseInt(nums[1]) < parseInt(nums[2]);
+  nums.length >= 8 &&
+  parseInt(nums[nums.length - 1]) < 100;
 
 equips.push({
 
