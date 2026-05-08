@@ -48,7 +48,7 @@ const clean = cols.filter(c => c !== "");
 
 const nums = clean
   .filter(c => /^[\d.,]+$/.test(c))
-  .slice(1);
+  .slice(1, 10);
 
 if (nums.length < 7) return;
 
@@ -64,7 +64,7 @@ if (img) {
 }
 
 // 🔥 detectem coeficient
-const teCoeficient = nums[2] === nums[3];
+const teCoeficient = nums.length >= 8;
 
 equips.push({
 
@@ -81,8 +81,8 @@ equips.push({
   p: teCoeficient ? nums[5] : nums[4],
 
   // 🔥 GF / GC des del final
-  f: nums[nums.length - 3],
-  c: nums[nums.length - 2],
+f: teCoeficient ? nums[6] : nums[5],
+c: teCoeficient ? nums[7] : nums[6],
 
   logo: escut
 
