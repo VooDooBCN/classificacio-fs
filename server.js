@@ -52,6 +52,17 @@ const nums = clean
 
 if (nums.length < 7) return;
 
+// 🔥 ESCUT
+const img = $(el).find("img").attr("src");
+
+let escut = "";
+
+if (img) {
+  escut = img.startsWith("http")
+    ? img
+    : "https://www.fcf.cat" + img;
+}
+
 // 🔥 detectem coeficient
 const teCoeficient = nums[2] === nums[3];
 
