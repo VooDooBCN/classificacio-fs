@@ -43,29 +43,27 @@ $("table tbody tr").each((i, el) => {
 
   const tds = $(el).find("td");
 
-  const cols = tds.map((i, td) => $(td).text().trim()).get();
-  const clean = cols.filter(c => c !== "");
+const cols = tds.map((i, td) => $(td).text().trim()).get();
+const clean = cols.filter(c => c !== "");
 
-  console.log("CLEAN:", clean);
+const nums = clean
+  .filter(c => /^[\d.,]+$/.test(c))
+  .slice(1, 9);
 
-  const nums = clean
-    .filter(c => /^[\d.,]+$/.test(c))
-    .slice(1);
+if (nums.length < 7) return;
 
-  console.log("NUMS:", nums);
+// 🔥 ESCUT
+const img = $(el).find("img").attr("src");
 
-  // 🔥 ESCUT
-  const img = $(el).find("img").attr("src");
+let escut = "";
 
-  let escut = "";
+if (img) {
+  escut = img.startsWith("http")
+    ? img
+    : "https://www.fcf.cat" + img;
+}
 
-  if (img) {
-    escut = img.startsWith("http")
-      ? img
-      : "https://www.fcf.cat" + img;
-  }
-
-  const teCoeficient = nums.length === 8;
+const teCoeficient = nums.length === 8;
 
   equips.push({
 
