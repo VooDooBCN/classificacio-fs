@@ -48,42 +48,34 @@ const clean = cols.filter(c => c !== "");
 
 const nums = clean
   .filter(c => /^[\d.,]+$/.test(c))
-  .slice(1, 9);
+  .slice(1);
 
 if (nums.length < 7) return;
 
-// 🔥 ESCUT
-const img = $(el).find("img").attr("src");
+// 🔥 detectem coeficient
+const teCoeficient = nums[2] === nums[3];
 
-let escut = "";
+equips.push({
 
-if (img) {
-  escut = img.startsWith("http")
-    ? img
-    : "https://www.fcf.cat" + img;
-}
+  pos: clean[0],
+  team: clean[1],
 
-const teCoeficient = nums.length === 8;
+  pts: nums[0],
 
-  equips.push({
+  coef: teCoeficient ? nums[1] : "-",
 
-    pos: clean[0],
-    team: clean[1],
+  j: teCoeficient ? nums[2] : nums[1],
+  g: teCoeficient ? nums[3] : nums[2],
+  e: teCoeficient ? nums[4] : nums[3],
+  p: teCoeficient ? nums[5] : nums[4],
 
-    pts: nums[0],
+  // 🔥 GF / GC des del final
+  f: nums[nums.length - 3],
+  c: nums[nums.length - 2],
 
-    coef: teCoeficient ? nums[1] : "-",
+  logo: escut
 
-    j: teCoeficient ? nums[2] : nums[1],
-    g: teCoeficient ? nums[3] : nums[2],
-    e: teCoeficient ? nums[4] : nums[3],
-    p: teCoeficient ? nums[5] : nums[4],
-    f: teCoeficient ? nums[6] : nums[5],
-    c: teCoeficient ? nums[7] : nums[6],
-
-    logo: escut
-
-  });
+});
 
 }); // 👈 AQUEST FALTAVA
 
