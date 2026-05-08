@@ -46,15 +46,13 @@ $("table tbody tr").each((i, el) => {
   const cols = tds.map((i, td) => $(td).text().trim()).get();
   const clean = cols.filter(c => c !== "");
 
-  if (!clean[1]) return;
+console.log("CLEAN:", clean);
 
-console.log(clean);
-  // 🔥 nums
 const nums = clean
   .filter(c => /^[\d.,]+$/.test(c))
   .slice(1);
 
-  if (nums.length < 7) return;
+console.log("NUMS:", nums);
 
   // 🔥 ESCUT
   const img = $(el).find("img").attr("src");
