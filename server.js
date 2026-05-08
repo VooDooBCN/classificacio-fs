@@ -81,8 +81,8 @@ equips.push({
   p: teCoeficient ? nums[5] : nums[4],
 
   // 🔥 GF / GC des del final
-f: teCoeficient ? nums[6] : nums[5],
-c: teCoeficient ? nums[7] : nums[6],
+  f: nums[nums.length - 3],
+  c: nums[nums.length - 2],
 
   logo: escut
 
