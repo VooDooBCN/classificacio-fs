@@ -1,0 +1,355 @@
+import express from "express";
+import cors from "cors";
+import * as cheerio from "cheerio";
+import axios from "axios";
+
+const app = express();
+
+app.use(cors());
+
+const PORT = 3001;
+
+// =====================================
+// CACHE
+// =====================================
+
+let cachePartits = [];
+let lastFetch = 0;
+
+const CACHE_TIME = 1000 * 60 * 15; // 15 min
+
+// =====================================
+// CATEGORIES DEL CLUB
+// =====================================
+
+const categories = [
+
+  {
+    equip: "Sènior A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1"
+  },
+
+  {
+    equip: "Sènior Femení",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-primera-divisio-femeni-futbol-sala/bcn-gr-1"
+  },
+
+  {
+    equip: "Sènior B",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-catalana-futbol-sala/bcn-gr4"
+  },
+
+  {
+    equip: "Juvenil A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-juvenil-futbol-sala/bcn-gr1"
+  },
+
+  {
+    equip: "Juvenil B",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-juvenil-futbol-sala/bcn-gr2"
+  },
+
+  {
+    equip: "Juvenil C",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-juvenil-futbol-sala/bcn-gr-2"
+  },
+
+  {
+    equip: "Cadet A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-primera-divisio-cadet-futbol-sala/bcn-gr-1"
+  },
+
+  {
+    equip: "Cadet B",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-cadet-futbol-sala/bcn-gr1"
+  },
+
+  {
+    equip: "Cadet Femení",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-promocio-cadet-femeni-futbol-sala-3a-fase/grup-2"
+  },
+
+  {
+    equip: "Infantil A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
+  },
+
+  {
+    equip: "Infantil B",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-infantil-futbol-sala/bcn-gr-3"
+  },
+
+  {
+    equip: "Aleví A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-primera-divisio-alevi-futbol-sala/bcn-gr-1"
+  },
+
+  {
+    equip: "Aleví B",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-alevi-futbol-sala/bcn-gr2"
+  },
+
+  {
+    equip: "Benjamí A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-promocio-benjami-futbol-sala/bcn-gr-2"
+  },
+
+  {
+    equip: "Prebenjamí A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/segona-fase-lliga-promocio-prebenjami-futbol-sala/grup-2"
+  },
+
+  {
+    equip: "Miniprebenjamí A",
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/copa-catalunya-miniprebenjami-futbol-sala/grup-3"
+  }
+
+];
+
+// =====================================
+// API PARTITS
+// =====================================
+
+app.get("/api/partits", async (req, res) => {
+
+  try {
+
+    // =====================================
+    // RETORNAR CACHE
+    // =====================================
+
+    if (
+      cachePartits.length > 0 &&
+      Date.now() - lastFetch < CACHE_TIME
+    ) {
+
+      console.log("⚡ Cache partits");
+
+      return res.json(cachePartits);
+
+    }
+
+    // =====================================
+    // CARREGAR PARTITS
+    // =====================================
+
+    const resultats = await Promise.all(
+
+      categories.map(async (cat) => {
+
+        try {
+
+          const { data } = await axios.get(cat.url, {
+            timeout: 10000
+          });
+
+          const $ = cheerio.load(data);
+
+          // =====================================
+          // COMPETICIÓ
+          // =====================================
+
+          const competicio = $(".fs-20.va-t")
+            .first()
+            .text()
+            .trim();
+
+          // =====================================
+          // TAULA PARTITS
+          // =====================================
+
+          const files = $(".table_resultats tr");
+
+          if (!files.length) return null;
+
+          // =====================================
+          // PARTIT
+          // =====================================
+
+          let properPartit = null;
+
+          $(files.get().reverse()).each((i, el) => {
+
+            if (properPartit) return;
+
+            const equips = $(el)
+              .find(".resultats-w-equip a");
+
+            if (equips.length < 2) return;
+
+            const local = equips.eq(0)
+              .text()
+              .trim();
+
+            const visitant = equips.eq(1)
+              .text()
+              .trim();
+
+            // =====================================
+            // NOMÉS PARETS
+            // =====================================
+
+            const esParets =
+              local.toLowerCase().includes("parets") ||
+              visitant.toLowerCase().includes("parets");
+
+            if (!esParets) return;
+
+            // =====================================
+            // DATA
+            // =====================================
+
+            const data = $(el)
+              .find(".lh-data")
+              .text()
+              .trim();
+
+            // =====================================
+            // HORA / ESTAT
+            // =====================================
+
+            const marcador = $(el)
+              .find(".fs-17, .resultat")
+              .text()
+              .trim()
+              .toUpperCase();
+
+            // =====================================
+            // RESULTAT
+            // =====================================
+
+            const esResultat =
+              /\d+\s*-\s*\d+/.test(marcador);
+
+            const jugat = esResultat;
+
+            // =====================================
+            // ESTATS ESPECIALS
+            // =====================================
+
+            const esRetirat =
+              marcador === "R";
+
+            const esDescansa =
+              marcador === "D";
+
+            const esSuspes =
+              marcador === "";
+
+            // =====================================
+            // LOGOS
+            // =====================================
+
+            const imgs = $(el).find("img");
+
+            const logoLocal =
+              imgs.eq(0).attr("src") || "";
+
+            const logoVisitant =
+              imgs.eq(1).attr("src") || "";
+
+            // =====================================
+            // CASA / FORA
+            // =====================================
+
+            const esCasa = local
+              .toLowerCase()
+              .includes("parets");
+
+            // =====================================
+            // GUARDAR PARTIT
+            // =====================================
+
+            properPartit = {
+
+              equip: cat.equip,
+
+              competicio,
+
+              local,
+              visitant,
+
+              hora: esRetirat
+                ? "RETIRAT"
+                : esDescansa
+                ? "DESCANSA"
+                : esSuspes
+                ? "SUSPÈS"
+                : marcador,
+
+              data: (
+                esRetirat ||
+                esDescansa ||
+                esSuspes
+              )
+                ? ""
+                : data,
+
+              jugat,
+
+              esCasa,
+
+              logoLocal,
+              logoVisitant
+
+            };
+
+          });
+
+          return properPartit;
+
+        } catch (err) {
+
+          console.log(
+            "Error categoria:",
+            cat.equip
+          );
+
+          return null;
+
+        }
+
+      })
+
+    );
+
+    // =====================================
+    // FILTRAR NULLS
+    // =====================================
+
+    const totsPartits =
+      resultats.filter(Boolean);
+
+    // =====================================
+    // GUARDAR CACHE
+    // =====================================
+
+    cachePartits = totsPartits;
+
+    lastFetch = Date.now();
+
+    res.json(totsPartits);
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      error: "Error carregant partits"
+    });
+
+  }
+
+});
+
+// =====================================
+// START SERVER
+// =====================================
+
+app.listen(PORT, () => {
+
+  console.log(
+    `Servidor partits actiu a port ${PORT}`
+  );
+
+});
