@@ -1,10 +1,10 @@
 {
   "name": "server-partits",
   "version": "1.0.0",
-  "main": "server-partits.js",
+  "main": "server_partits.js",
   "type": "module",
   "scripts": {
-    "start": "node server-partits.js"
+    "start": "node server_partits.js"
   },
   "dependencies": {
     "axios": "^1.6.0",
