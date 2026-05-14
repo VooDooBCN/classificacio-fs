@@ -26,42 +26,42 @@ const categories = [
 
   {
     equip: "Sènior A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1"
+    url: "https://www.fcf.cat/equip/2526/dh/parets-fs-a"
   },
 
   {
     equip: "Sènior Femení",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-primera-divisio-femeni-futbol-sala/bcn-gr-1"
+    url: "https://www.fcf.cat/equip/2526/1sf/parets-fs-a"
   },
 
   {
     equip: "Sènior B",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-catalana-futbol-sala/bcn-gr4"
+    url: "https://www.fcf.cat/equip/2526/as3/parets-fs-b"
   },
 
   {
     equip: "Juvenil A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-juvenil-futbol-sala/bcn-gr1"
+    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-a"
   },
 
   {
     equip: "Juvenil B",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-juvenil-futbol-sala/bcn-gr2"
+    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-b"
   },
 
   {
     equip: "Juvenil C",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-juvenil-futbol-sala/bcn-gr-2"
+    url: "https://www.fcf.cat/equip/2526/3js/parets-fs-c"
   },
 
   {
     equip: "Cadet A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-primera-divisio-cadet-futbol-sala/bcn-gr-1"
+    url: "https://www.fcf.cat/equip/2526/1cs/parets-fs-a"
   },
 
   {
     equip: "Cadet B",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-cadet-futbol-sala/bcn-gr1"
+    url: "https://www.fcf.cat/equip/2526/2cs/parets-fs-b"
   },
 
   {
@@ -71,22 +71,22 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
+    url: "https://www.fcf.cat/equip/2526/2is/parets-fs-a"
   },
 
   {
     equip: "Infantil B",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-infantil-futbol-sala/bcn-gr-3"
+    url: "https://www.fcf.cat/equip/2526/3is/parets-fs-b"
   },
 
   {
     equip: "Aleví A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-primera-divisio-alevi-futbol-sala/bcn-gr-1"
+    url: "https://www.fcf.cat/equip/2526/1sa/parets-fs-a"
   },
 
   {
     equip: "Aleví B",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-alevi-futbol-sala/bcn-gr2"
+    url: "https://www.fcf.cat/equip/2526/2sa/parets-fs-b"
   },
 
   {
@@ -144,6 +144,9 @@ app.get("/api/partits", async (req, res) => {
           });
 
           const $ = cheerio.load(data);
+          
+          const esPaginaEquip =
+            cat.url.includes("/equip/");
 
           // =====================================
           // COMPETICIÓ
@@ -158,7 +161,9 @@ app.get("/api/partits", async (req, res) => {
           // TAULA PARTITS
           // =====================================
 
-          const files = $(".table_resultats tr");
+          const files = esPaginaEquip
+            ? $(".table_resultats tr").slice(1, 3)
+            : $(".table_resultats tr");
 
           if (!files.length) return null;
 
@@ -168,7 +173,11 @@ app.get("/api/partits", async (req, res) => {
 
           let properPartit = null;
 
-          $(files.get().reverse()).each((i, el) => {
+          const filesArray = esPaginaEquip
+            ? files.get()
+            : files.get().reverse();
+
+          $(filesArray).each((i, el) => {
 
             if (properPartit) return;
 
