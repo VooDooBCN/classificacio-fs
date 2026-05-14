@@ -127,10 +127,20 @@ async function obtenirPartit(url, equipNom) {
     // COMPETICIÓ
     // =====================================
 
-    const competicio = $(".fs-20.va-t")
-      .first()
-      .text()
-      .trim();
+let competicio = $(".fs-20.va-t")
+  .first()
+  .text()
+  .trim();
+
+// fallback per pàgines /resultats/
+if (!competicio) {
+
+  competicio = $("select option:selected")
+    .first()
+    .text()
+    .trim();
+
+}
 
     // =====================================
     // TAULA PARTITS
