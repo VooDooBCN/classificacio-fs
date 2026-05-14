@@ -107,6 +107,197 @@ const categories = [
 ];
 
 // =====================================
+// OBTENIR PARTIT
+// =====================================
+
+async function obtenirPartit(url, equipNom) {
+
+  try {
+
+    const { data } = await axios.get(url, {
+      timeout: 10000
+    });
+
+    const $ = cheerio.load(data);
+
+    const esPaginaEquip =
+      url.includes("/equip/");
+
+    // =====================================
+    // COMPETICIÓ
+    // =====================================
+
+    const competicio = $(".fs-20.va-t")
+      .first()
+      .text()
+      .trim();
+
+    // =====================================
+    // TAULA PARTITS
+    // =====================================
+
+    const files = esPaginaEquip
+      ? $(".table_resultats tr").slice(1, 3)
+      : $(".table_resultats tr");
+
+    if (!files.length) return null;
+
+    // =====================================
+    // ORDRE FILES
+    // =====================================
+
+    const filesArray = esPaginaEquip
+      ? files.get()
+      : files.get().reverse();
+
+    // =====================================
+    // BUSCAR PARTIT
+    // =====================================
+
+    for (const el of filesArray) {
+
+      const equips = $(el)
+        .find(".resultats-w-equip a");
+
+      if (equips.length < 2) continue;
+
+      const local = equips.eq(0)
+        .text()
+        .trim();
+
+      const visitant = equips.eq(1)
+        .text()
+        .trim();
+
+      // =====================================
+      // NOMÉS PARETS
+      // =====================================
+
+      const esParets =
+        local.toLowerCase().includes("parets") ||
+        visitant.toLowerCase().includes("parets");
+
+      if (!esParets) continue;
+
+      // =====================================
+      // DATA
+      // =====================================
+
+      const dataPartit = $(el)
+        .find(".lh-data")
+        .text()
+        .trim();
+
+      // =====================================
+      // HORA / RESULTAT
+      // =====================================
+
+      const marcador = $(el)
+        .find(".fs-17, .resultat")
+        .text()
+        .trim()
+        .toUpperCase();
+
+      // =====================================
+      // RESULTAT
+      // =====================================
+
+      const esResultat =
+        /\d+\s*-\s*\d+/.test(marcador);
+
+      const jugat = esResultat;
+
+      // =====================================
+      // ESTATS ESPECIALS
+      // =====================================
+
+      const esRetirat =
+        marcador === "R";
+
+      const esDescansa =
+        marcador === "D";
+
+      // IMPORTANT:
+      // a /equip/ buit = partit futur
+      const esSuspes =
+        marcador === "" && !esPaginaEquip;
+
+      // =====================================
+      // LOGOS
+      // =====================================
+
+      const imgs = $(el).find("img");
+
+      const logoLocal =
+        imgs.eq(0).attr("src") || "";
+
+      const logoVisitant =
+        imgs.eq(1).attr("src") || "";
+
+      // =====================================
+      // CASA / FORA
+      // =====================================
+
+      const esCasa = local
+        .toLowerCase()
+        .includes("parets");
+
+      // =====================================
+      // RETORNAR PARTIT
+      // =====================================
+
+      return {
+
+        equip: equipNom,
+
+        competicio,
+
+        local,
+        visitant,
+
+        hora: esRetirat
+          ? "RETIRAT"
+          : esDescansa
+          ? "DESCANSA"
+          : esSuspes
+          ? "SUSPÈS"
+          : marcador,
+
+        data: (
+          esRetirat ||
+          esDescansa ||
+          esSuspes
+        )
+          ? ""
+          : dataPartit,
+
+        jugat,
+
+        esCasa,
+
+        logoLocal,
+        logoVisitant
+
+      };
+
+    }
+
+    return null;
+
+  } catch (err) {
+
+    console.log(
+      "Error obtenint partit:",
+      equipNom
+    );
+
+    return null;
+
+  }
+
+}
+
+// =====================================
 // API PARTITS
 // =====================================
 
@@ -139,204 +330,67 @@ app.get("/api/partits", async (req, res) => {
 
         try {
 
-          const { data } = await axios.get(cat.url, {
-            timeout: 10000
-          });
-
-          const $ = cheerio.load(data);
-          
-          const esPaginaResultats =
-            cat.url.includes("/resultats/");
-          
-          const esPaginaEquip =
-            cat.url.includes("/equip/");
-
           // =====================================
-          // COMPETICIÓ
+          // PRIMER SCRAPING
           // =====================================
 
-          const competicio = $(".fs-20.va-t")
-            .first()
-            .text()
-            .trim();
+          let partit =
+            await obtenirPartit(
+              cat.url,
+              cat.equip
+            );
+
+          if (!partit) return null;
 
           // =====================================
-          // TAULA PARTITS
+          // SI /RESULTATS/ I ESTÀ JUGAT
+          // PROVAR JORNADA SEGÜENT
           // =====================================
 
-          const files = esPaginaEquip
-            ? $(".table_resultats tr").slice(1, 3)
-            : $(".table_resultats tr");
+          if (
+            partit.jugat &&
+            cat.url.includes("/resultats/")
+          ) {
 
-          if (!files.length) return null;
+            const matchJornada =
+              cat.url.match(/jornada-(\d+)/);
 
-          // =====================================
-          // PARTIT
-          // =====================================
+            const jornadaActual =
+              matchJornada
+                ? parseInt(matchJornada[1])
+                : 1;
 
-          let properPartit = null;
+            const urlBase =
+              cat.url.replace(/\/jornada-\d+/, "");
 
-          const filesArray = esPaginaEquip
-            ? files.get()
-            : files.get().reverse();
+            const urlSeguent =
+              `${urlBase}/jornada-${jornadaActual + 1}`;
 
-          $(filesArray).each((i, el) => {
+            console.log(
+              "➡️ Provant següent jornada:",
+              urlSeguent
+            );
 
-            if (properPartit) return;
+            const partitSeguent =
+              await obtenirPartit(
+                urlSeguent,
+                cat.equip
+              );
 
-            const equips = $(el)
-              .find(".resultats-w-equip a");
+            // si troba partit nou
+            // substituir
+            if (
+              partitSeguent &&
+              !partitSeguent.jugat
+            ) {
 
-            if (equips.length < 2) return;
+              partit = partitSeguent;
 
-            const local = equips.eq(0)
-              .text()
-              .trim();
+            }
 
-            const visitant = equips.eq(1)
-              .text()
-              .trim();
+          }
 
-            // =====================================
-            // NOMÉS PARETS
-            // =====================================
-
-            const esParets =
-              local.toLowerCase().includes("parets") ||
-              visitant.toLowerCase().includes("parets");
-
-            if (!esParets) return;
-
-            // =====================================
-            // DATA
-            // =====================================
-
-            const data = $(el)
-              .find(".lh-data")
-              .text()
-              .trim();
-
-            // =====================================
-            // HORA / ESTAT
-            // =====================================
-
-            const marcador = $(el)
-              .find(".fs-17, .resultat")
-              .text()
-              .trim()
-              .toUpperCase();
-
-            // =====================================
-            // RESULTAT
-            // =====================================
-
-            const esResultat =
-              /\d+\s*-\s*\d+/.test(marcador);
-
-            const jugat = esResultat;
-
-            // =====================================
-            // ESTATS ESPECIALS
-            // =====================================
-
-            const esRetirat =
-              marcador === "R";
-
-            const esDescansa =
-              marcador === "D";
-
-            const esSuspes =
-              marcador === "";
-
-            // =====================================
-            // LOGOS
-            // =====================================
-
-            const imgs = $(el).find("img");
-
-            const logoLocal =
-              imgs.eq(0).attr("src") || "";
-
-            const logoVisitant =
-              imgs.eq(1).attr("src") || "";
-
-            // =====================================
-            // CASA / FORA
-            // =====================================
-
-            const esCasa = local
-              .toLowerCase()
-              .includes("parets");
-
-            // =====================================
-// SI ESTÀ JUGAT I ÉS /RESULTATS/
-// PROVAR JORNADA SEGÜENT
-// =====================================
-
-if (jugat && !esPaginaEquip) {
-
-  const matchJornada =
-    cat.url.match(/jornada-(\d+)/);
-
-  const jornadaActual =
-    matchJornada
-      ? parseInt(matchJornada[1])
-      : 1;
-
-  const urlBase =
-    cat.url.replace(/\/jornada-\d+/, "");
-
-  const urlSeguent =
-    `${urlBase}/jornada-${jornadaActual + 1}`;
-
-  console.log(
-    "➡️ Provant següent jornada:",
-    urlSeguent
-  );
-
-}
-            
-            // =====================================
-            // GUARDAR PARTIT
-            // =====================================
-
-            properPartit = {
-
-              equip: cat.equip,
-
-              competicio,
-
-              local,
-              visitant,
-
-              hora: esRetirat
-                ? "RETIRAT"
-                : esDescansa
-                ? "DESCANSA"
-                : esSuspes
-                ? "SUSPÈS"
-                : marcador,
-
-              data: (
-                esRetirat ||
-                esDescansa ||
-                esSuspes
-              )
-                ? ""
-                : data,
-
-              jugat,
-
-              esCasa,
-
-              logoLocal,
-              logoVisitant
-
-            };
-
-          });
-
-          return properPartit;
+          return partit;
 
         } catch (err) {
 
