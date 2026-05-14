@@ -145,6 +145,9 @@ app.get("/api/partits", async (req, res) => {
 
           const $ = cheerio.load(data);
           
+          const esPaginaResultats =
+            cat.url.includes("/resultats/");
+          
           const esPaginaEquip =
             cat.url.includes("/equip/");
 
@@ -265,6 +268,34 @@ app.get("/api/partits", async (req, res) => {
               .toLowerCase()
               .includes("parets");
 
+            // =====================================
+// SI ESTÀ JUGAT I ÉS /RESULTATS/
+// PROVAR JORNADA SEGÜENT
+// =====================================
+
+if (jugat && !esPaginaEquip) {
+
+  const matchJornada =
+    cat.url.match(/jornada-(\d+)/);
+
+  const jornadaActual =
+    matchJornada
+      ? parseInt(matchJornada[1])
+      : 1;
+
+  const urlBase =
+    cat.url.replace(/\/jornada-\d+/, "");
+
+  const urlSeguent =
+    `${urlBase}/jornada-${jornadaActual + 1}`;
+
+  console.log(
+    "➡️ Provant següent jornada:",
+    urlSeguent
+  );
+
+}
+            
             // =====================================
             // GUARDAR PARTIT
             // =====================================
