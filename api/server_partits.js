@@ -140,7 +140,7 @@ async function obtenirPartit(url, equipNom) {
       ? $(".table_resultats tr").slice(1, 3)
       : $(".table_resultats tr");
 
-    if (!files.length) return null;
+    if (!files.length) return [];
 
     // =====================================
     // ORDRE FILES
@@ -154,6 +154,8 @@ async function obtenirPartit(url, equipNom) {
     // BUSCAR PARTIT
     // =====================================
 
+    const futursPartits = [];
+    
     for (const el of filesArray) {
 
       const equips = $(el)
@@ -254,47 +256,47 @@ async function obtenirPartit(url, equipNom) {
         .toLowerCase()
         .includes("parets");
 
-      // =====================================
-      // RETORNAR PARTIT
-      // =====================================
+// =====================================
+// GUARDAR PARTIT FUTUR
+// =====================================
 
-      return {
+futursPartits.push({
 
-        equip: equipNom,
+  equip: equipNom,
 
-        competicio,
+  competicio,
 
-        local,
-        visitant,
+  local,
+  visitant,
 
-        hora: esRetirat
-          ? "RETIRAT"
-          : esDescansa
-          ? "DESCANSA"
-          : esSuspes
-          ? "SUSPÈS"
-          : marcador,
+  hora: esRetirat
+    ? "RETIRAT"
+    : esDescansa
+    ? "DESCANSA"
+    : esSuspes
+    ? "SUSPÈS"
+    : marcador,
 
-        data: (
-          esRetirat ||
-          esDescansa ||
-          esSuspes
-        )
-          ? ""
-          : dataPartit,
+  data: (
+    esRetirat ||
+    esDescansa ||
+    esSuspes
+  )
+    ? ""
+    : dataPartit,
 
-        jugat,
+  jugat,
 
-        esCasa,
+  esCasa,
 
-        logoLocal,
-        logoVisitant
+  logoLocal,
+  logoVisitant
 
-      };
+});
 
     }
 
-    return null;
+return futursPartits;
 
   } catch (err) {
 
@@ -303,7 +305,7 @@ async function obtenirPartit(url, equipNom) {
       equipNom
     );
 
-    return null;
+    return [];
 
   }
 
@@ -342,44 +344,106 @@ app.get("/api/partits", async (req, res) => {
 
         try {
 
-          // =====================================
-          // PRIMER SCRAPING
-          // =====================================
+// =====================================
+// OBTENIR TOTS ELS PARTITS
+// =====================================
 
-          let partit =
-            await obtenirPartit(
-              cat.url,
-              cat.equip
-            );
+let totsPartits = [];
 
-          // =====================================
-          // SI NO TROBA PARTIT FUTUR
-          // PROVAR JORNADA 2
-          // =====================================
+// jornada principal
+const partitsInicials =
+  await obtenirPartit(
+    cat.url,
+    cat.equip
+  );
 
-          if (
-            !partit &&
-            cat.url.includes("/resultats/")
-          ) {
+totsPartits.push(...partitsInicials);
 
-            const urlSeguent =
-              `${cat.url}/jornada-2`;
+// jornades extra
+if (cat.url.includes("/resultats/")) {
 
-            console.log(
-              "➡️ Provant següent jornada:",
-              urlSeguent
-            );
+  for (let jornada = 2; jornada <= 40; jornada++) {
 
-            partit = await obtenirPartit(
-              urlSeguent,
-              cat.equip
-            );
+    const urlJornada =
+      `${cat.url}/jornada-${jornada}`;
 
-          }
+    console.log(
+      `➡️ Provant jornada ${jornada}:`,
+      urlJornada
+    );
 
-          if (!partit) return null;
+    const partitsJornada =
+      await obtenirPartit(
+        urlJornada,
+        cat.equip
+      );
 
-          return partit;
+    if (partitsJornada.length) {
+
+      totsPartits.push(...partitsJornada);
+
+    }
+
+  }
+
+}
+
+// si no hi ha partits
+if (!totsPartits.length) {
+  return null;
+}
+
+// =====================================
+// ORDENAR PER DATA
+// =====================================
+
+totsPartits = totsPartits.filter(
+  (partit, index, self) => {
+
+    const id =
+      `${partit.local}-${partit.visitant}-${partit.data}`;
+
+    return index === self.findIndex(p =>
+
+      `${p.local}-${p.visitant}-${p.data}` === id
+
+    );
+
+  }
+);          
+          
+totsPartits.sort((a, b) => {
+
+ const parseData = (partit) => {
+
+  const txt = partit.data || "";
+const hora =
+  /^\d{2}:\d{2}$/.test(partit.hora)
+    ? partit.hora
+    : "00:00";
+
+  const match =
+    txt.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+
+  if (!match) return Infinity;
+
+  const [, d, m, y] = match;
+
+  return new Date(
+    `${y}-${m}-${d}T${hora}`
+  ).getTime();
+
+};
+
+return parseData(a) - parseData(b);
+
+});
+
+// =====================================
+// RETORNAR EL MÉS PROPER
+// =====================================
+
+return totsPartits[0];
 
         } catch (err) {
 
@@ -388,7 +452,7 @@ app.get("/api/partits", async (req, res) => {
             cat.equip
           );
 
-          return null;
+          return [];
 
         }
 
