@@ -362,7 +362,7 @@ totsPartits.push(...partitsInicials);
 // jornades extra
 if (cat.url.includes("/resultats/")) {
 
-  for (let jornada = 2; jornada <= 40; jornada++) {
+  for (let jornada = 2; jornada <= 15; jornada++) {
 
     const urlJornada =
       `${cat.url}/jornada-${jornada}`;
