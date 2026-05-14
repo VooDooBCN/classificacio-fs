@@ -178,30 +178,6 @@ async function obtenirPartit(url, equipNom) {
         visitant.toLowerCase().includes("parets");
 
       if (!esParets) continue;
-      
-      // si és /resultats/
-// ignorar partits ja jugats
-
-if (
-  !esPaginaEquip &&
-  /\d+\s*-\s*\d+/.test(
-    $(el)
-      .find(".fs-17, .resultat")
-      .text()
-      .trim()
-  )
-) {
-  continue;
-}
-
-      // =====================================
-      // DATA
-      // =====================================
-
-      const dataPartit = $(el)
-        .find(".lh-data")
-        .text()
-        .trim();
 
       // =====================================
       // HORA / RESULTAT
@@ -212,6 +188,27 @@ if (
         .text()
         .trim()
         .toUpperCase();
+
+      // =====================================
+      // SI ÉS /RESULTATS/
+      // IGNORAR PARTITS JUGATS
+      // =====================================
+
+      if (
+        !esPaginaEquip &&
+        /\d+\s*-\s*\d+/.test(marcador)
+      ) {
+        continue;
+      }
+
+      // =====================================
+      // DATA
+      // =====================================
+
+      const dataPartit = $(el)
+        .find(".lh-data")
+        .text()
+        .trim();
 
       // =====================================
       // RESULTAT
@@ -354,6 +351,31 @@ app.get("/api/partits", async (req, res) => {
               cat.url,
               cat.equip
             );
+
+          // =====================================
+          // SI NO TROBA PARTIT FUTUR
+          // PROVAR JORNADA 2
+          // =====================================
+
+          if (
+            !partit &&
+            cat.url.includes("/resultats/")
+          ) {
+
+            const urlSeguent =
+              `${cat.url}/jornada-2`;
+
+            console.log(
+              "➡️ Provant següent jornada:",
+              urlSeguent
+            );
+
+            partit = await obtenirPartit(
+              urlSeguent,
+              cat.equip
+            );
+
+          }
 
           if (!partit) return null;
 
