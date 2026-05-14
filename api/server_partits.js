@@ -178,6 +178,21 @@ async function obtenirPartit(url, equipNom) {
         visitant.toLowerCase().includes("parets");
 
       if (!esParets) continue;
+      
+      // si és /resultats/
+// ignorar partits ja jugats
+
+if (
+  !esPaginaEquip &&
+  /\d+\s*-\s*\d+/.test(
+    $(el)
+      .find(".fs-17, .resultat")
+      .text()
+      .trim()
+  )
+) {
+  continue;
+}
 
       // =====================================
       // DATA
@@ -341,54 +356,6 @@ app.get("/api/partits", async (req, res) => {
             );
 
           if (!partit) return null;
-
-          // =====================================
-          // SI /RESULTATS/ I ESTÀ JUGAT
-          // PROVAR JORNADA SEGÜENT
-          // =====================================
-
-          if (
-            partit.jugat &&
-            cat.url.includes("/resultats/")
-          ) {
-
-            const matchJornada =
-              cat.url.match(/jornada-(\d+)/);
-
-            const jornadaActual =
-              matchJornada
-                ? parseInt(matchJornada[1])
-                : 1;
-
-            const urlBase =
-              cat.url.replace(/\/jornada-\d+/, "");
-
-            const urlSeguent =
-              `${urlBase}/jornada-${jornadaActual + 1}`;
-
-            console.log(
-              "➡️ Provant següent jornada:",
-              urlSeguent
-            );
-
-            const partitSeguent =
-              await obtenirPartit(
-                urlSeguent,
-                cat.equip
-              );
-
-            // si troba partit nou
-            // substituir
-            if (
-              partitSeguent &&
-              !partitSeguent.jugat
-            ) {
-
-              partit = partitSeguent;
-
-            }
-
-          }
 
           return partit;
 
