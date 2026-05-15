@@ -206,11 +206,13 @@ const filesArray = esPaginaEquip
 
 if (
   esPaginaEquip &&
-  /\d+\s*-\s*\d+/.test(marcador)
+  (
+    /\d+\s*-\s*\d+/.test(marcador) ||
+    marcador === "R"
+  )
 ) {
   continue;
 }
-
       // =====================================
       // SI ÉS /RESULTATS/
       // IGNORAR PARTITS JUGATS
