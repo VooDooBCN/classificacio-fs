@@ -204,12 +204,12 @@ if (!competicio) {
       // IGNORAR PARTITS JUGATS
       // =====================================
 
-      if (
-        !esPaginaEquip &&
-        /\d+\s*-\s*\d+/.test(marcador)
-      ) {
-        continue;
-      }
+if (
+  marcador.match(/\d+\s*-\s*\d+/) ||
+  marcador === "R"
+) {
+  continue;
+}
 
       // =====================================
       // DATA
@@ -224,8 +224,8 @@ if (!competicio) {
       // RESULTAT
       // =====================================
 
-      const esResultat =
-        /\d+\s*-\s*\d+/.test(marcador);
+const esResultat =
+  marcador.match(/\d+\s*-\s*\d+/);
 
       const jugat = esResultat;
 
