@@ -169,15 +169,15 @@ const filesArray = esPaginaEquip
       const equips = $(el)
         .find(".resultats-w-equip a");
 
-      if (equips.length < 2) continue;
+      if (equips.length < 1) continue;
 
-      const local = equips.eq(0)
-        .text()
-        .trim();
+const local = equips.eq(0)
+  .text()
+  .trim() || "";
 
-      const visitant = equips.eq(1)
-        .text()
-        .trim();
+const visitant = equips.eq(1)
+  .text()
+  .trim() || "";
 
       // =====================================
       // NOMÉS PARETS
@@ -206,10 +206,7 @@ const filesArray = esPaginaEquip
 
 if (
   esPaginaEquip &&
-  (
-    /\d+\s*-\s*\d+/.test(marcador) ||
-    marcador === "R"
-  )
+  /\d+\s*-\s*\d+/.test(marcador)
 ) {
   continue;
 }
