@@ -155,7 +155,7 @@ if (!competicio) {
     // =====================================
 
 const filesArray = esPaginaEquip
-  ? [files.get()[1]]
+  ? files.get()
   : files.get().reverse();
 
     // =====================================
@@ -198,6 +198,18 @@ const filesArray = esPaginaEquip
         .text()
         .trim()
         .toUpperCase();
+      
+// =====================================
+// /EQUIP/
+// IGNORAR PARTITS JA JUGATS
+// =====================================
+
+if (
+  esPaginaEquip &&
+  /\d+\s*-\s*\d+/.test(marcador)
+) {
+  continue;
+}
 
       // =====================================
       // SI ÉS /RESULTATS/
