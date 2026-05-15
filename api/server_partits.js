@@ -210,27 +210,46 @@ const visitant = equips.eq(1)
 
 if (/\d+\s*-\s*\d+/.test(marcador)) {
 
-  const match =
-    dataPartit.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+  // si no hi ha data, no ignorar
+  if (!dataPartit) {
 
-  if (match) {
+    // mantenir visible
+  }
 
-    const [, d, m, y] = match;
+  else {
 
-    const dataPartitObj =
-      new Date(`${y}-${m}-${d}`);
+    const match =
+      dataPartit.match(
+        /(\d{2})[\/-](\d{2})[\/-](\d{4})/
+      );
 
-    const ara =
-      new Date();
+    // si no pot llegir la data
+    // mantenir visible
+    if (!match) {
 
-    const diferenciaDies =
-      (ara - dataPartitObj) /
-      (1000 * 60 * 60 * 24);
+      // no fer continue
+    }
 
-    // si han passat més de 2 dies
-    if (diferenciaDies > 2) {
+    else {
 
-      continue;
+      const [, d, m, y] = match;
+
+      const dataPartitObj =
+        new Date(`${y}-${m}-${d}`);
+
+      const ara =
+        new Date();
+
+      const diferenciaDies =
+        (ara - dataPartitObj) /
+        (1000 * 60 * 60 * 24);
+
+      // només amagar si > 2 dies
+      if (diferenciaDies > 2) {
+
+        continue;
+
+      }
 
     }
 
