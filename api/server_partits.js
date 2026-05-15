@@ -204,11 +204,22 @@ const visitant = equips.eq(1)
 // IGNORAR PARTITS JA JUGATS
 // =====================================
 
-const esResultat =
-  /\d+\s*-\s*\d+/.test(marcador);
+if (
+  esPaginaEquip &&
+  /\d+\s*-\s*\d+/.test(marcador)
+) {
+  continue;
+}
+      
+// =====================================
+// /RESULTATS/
+// MANTENIR RESULTAT 48H
+// =====================================
 
-// si és resultat, mantenir-lo 48h
-if (!esPaginaEquip && esResultat) {
+if (
+  !esPaginaEquip &&
+  /\d+\s*-\s*\d+/.test(marcador)
+) {
 
   const match =
     dataPartit.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
@@ -220,19 +231,24 @@ if (!esPaginaEquip && esResultat) {
     const dataPartitObj =
       new Date(`${y}-${m}-${d}`);
 
-    const ara = new Date();
+    const ara =
+      new Date();
 
     const diferenciaDies =
-      (ara - dataPartitObj) / (1000 * 60 * 60 * 24);
+      (ara - dataPartitObj) /
+      (1000 * 60 * 60 * 24);
 
     // si han passat més de 2 dies
     if (diferenciaDies > 2) {
+
       continue;
+
     }
 
   }
 
 }
+      
       // =====================================
       // SI ÉS /RESULTATS/
       // IGNORAR PARTITS JUGATS
