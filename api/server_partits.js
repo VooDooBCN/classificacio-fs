@@ -232,11 +232,15 @@ const esResultat =
       // ESTATS ESPECIALS
       // =====================================
 
-      const esRetirat =
-        marcador === "R";
+const esRetirat =
+  marcador === "R";
 
-      const esDescansa =
-        marcador === "D";
+if (esRetirat) {
+  continue;
+}
+
+const esDescansa =
+  marcador === "D";
 
       // IMPORTANT:
       // a /equip/ buit = partit futur
