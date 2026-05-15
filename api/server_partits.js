@@ -146,9 +146,7 @@ if (!competicio) {
     // TAULA PARTITS
     // =====================================
 
-const files = esPaginaEquip
-  ? $(".table_resultats tr").slice(1, 6)
-  : $(".table_resultats tr");
+    const files = $(".table_resultats tr");
 
     if (!files.length) return [];
 
