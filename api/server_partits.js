@@ -154,9 +154,9 @@ if (!competicio) {
     // ORDRE FILES
     // =====================================
 
-    const filesArray = esPaginaEquip
-      ? files.get()
-      : files.get().reverse();
+const filesArray = esPaginaEquip
+  ? [files.get()[1]]
+  : files.get().reverse();
 
     // =====================================
     // BUSCAR PARTIT
