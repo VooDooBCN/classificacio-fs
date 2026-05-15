@@ -205,8 +205,7 @@ if (!competicio) {
       // =====================================
 
 if (
-  marcador.match(/\d+\s*-\s*\d+/) ||
-  marcador === "R"
+  marcador.match(/\d+\s*-\s*\d+/)
 ) {
   continue;
 }
@@ -372,8 +371,11 @@ if (cat.url.includes("/resultats/")) {
 
   for (let jornada = 2; jornada <= 15; jornada++) {
 
-    const urlJornada =
-      `${cat.url}/jornada-${jornada}`;
+ const urlBase =
+  cat.url.replace(/\/jornada-\d+/, "");
+
+const urlJornada =
+  `${urlBase}/jornada-${jornada}`;
 
     console.log(
       `➡️ Provant jornada ${jornada}:`,
