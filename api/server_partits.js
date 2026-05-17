@@ -556,7 +556,7 @@ if (resultatRecent) {
   return resultatRecent;
 }
 
-// pròxim partit REAL
+// si no → pròxim partit REAL
 const properPartit = totsPartits
 
   .filter(p =>
@@ -597,6 +597,21 @@ if (!properPartit) {
 }
 
 return properPartit;
+
+        } catch (err) {
+
+          console.log(
+            "Error categoria:",
+            cat.equip
+          );
+
+          return [];
+
+        }
+
+      })
+
+    );
 
     // =====================================
     // FILTRAR NULLS
