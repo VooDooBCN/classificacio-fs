@@ -515,9 +515,17 @@ if (resultatRecent) {
   return resultatRecent;
 }
 
-// si no → pròxim partit
-return totsPartits.find(p => !p.jugat)
-  || totsPartits[0];
+// si no → pròxim partit REAL
+const properPartit = totsPartits.find(p =>
+
+  !p.jugat &&
+  p.hora !== "SUSPÈS" &&
+  p.hora !== "RETIRAT" &&
+  p.hora !== "DESCANSA"
+
+);
+
+return properPartit || totsPartits[0];
 
         } catch (err) {
 
