@@ -199,12 +199,6 @@ const visitant = equips.eq(1)
         .trim()
         .toUpperCase();
       
-console.log(
-  equipNom,
-  local,
-  visitant,
-  marcador
-);
 
       // =====================================
       // DATA
@@ -256,11 +250,9 @@ if (marcador.match(/\d+\s*-\s*\d+/)) {
       // =====================================
 
 const esResultat =
-  /^\d+\s*-\s*\d+$/.test(marcador);
+  marcador.match(/\d+\s*-\s*\d+/);
 
-const jugat =
-  esResultat &&
-  marcador !== "SUSPÈS";
+      const jugat = esResultat;
 
       // =====================================
       // ESTATS ESPECIALS
@@ -488,115 +480,10 @@ return parseData(a) - parseData(b);
 });
 
 // =====================================
-// PRIORITAT:
-// 1. RESULTAT < 48H
-// 2. PRÒXIM PARTIT
+// RETORNAR EL MÉS PROPER
 // =====================================
 
-const ara = new Date();
-
-// buscar resultat recent REAL
-const resultatRecent = totsPartits
-
-  .filter(p => {
-
-    if (!p.jugat || !p.data) {
-      return false;
-    }
-
-    const match =
-      p.data.match(
-        /(\d{2})[\/-](\d{2})[\/-](\d{4})/
-      );
-
-    if (!match) {
-      return false;
-    }
-
-    const [, d, m, y] = match;
-
-    const dataPartit =
-      new Date(`${y}-${m}-${d}`);
-
-    const diferencia =
-      (ara - dataPartit) /
-      (1000 * 60 * 60);
-
-    return diferencia <= 48;
-
-  })
-
-  .sort((a, b) => {
-
-    const parseData = (partit) => {
-
-      const txt = partit.data || "";
-
-      const match =
-        txt.match(
-          /(\d{2})[\/-](\d{2})[\/-](\d{4})/
-        );
-
-      if (!match) return 0;
-
-      const [, d, m, y] = match;
-
-      return new Date(
-        `${y}-${m}-${d}`
-      ).getTime();
-
-    };
-
-    return parseData(b) - parseData(a);
-
-  })[0];
-          
-// si existeix resultat recent
-if (resultatRecent) {
-  return resultatRecent;
-}
-
-// si no → pròxim partit REAL
-const properPartit = totsPartits
-
-  .filter(p =>
-
-    !p.jugat &&
-    p.hora !== "SUSPÈS" &&
-    p.hora !== "RETIRAT" &&
-    p.hora !== "DESCANSA"
-
-  )
-
-  .sort((a, b) => {
-
-    const parseData = (partit) => {
-
-      const txt = partit.data || "";
-
-      const match =
-        txt.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
-
-      if (!match) return Infinity;
-
-      const [, d, m, y] = match;
-
-      return new Date(
-        `${y}-${m}-${d}`
-      ).getTime();
-
-    };
-
-    return parseData(a) - parseData(b);
-
-  })[0];
-
-// si no hi ha pròxim partit
-if (!properPartit) {
-  return null;
-}
-
-return properPartit;
+return totsPartits[0];
 
         } catch (err) {
 
