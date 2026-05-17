@@ -210,7 +210,7 @@ const visitant = equips.eq(1)
         .trim();
       
 // =====================================
-// MANTENIR RESULTATS 48H
+// MANTENIR RESULTATS 24H
 // =====================================
 
 if (marcador.match(/\d+\s*-\s*\d+/)) {
@@ -235,7 +235,7 @@ if (marcador.match(/\d+\s*-\s*\d+/)) {
       (1000 * 60 * 60 * 24);
 
     // si han passat més de 2 dies
-    if (diferenciaDies > 2) {
+    if (diferenciaDies > 1) {
 
       continue;
 
