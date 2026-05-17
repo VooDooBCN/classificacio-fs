@@ -550,12 +550,13 @@ const resultatRecent = totsPartits
     return parseData(b) - parseData(a);
 
   })[0];
+          
 // si existeix resultat recent
 if (resultatRecent) {
   return resultatRecent;
 }
 
-// si no → pròxim partit REAL
+// pròxim partit REAL
 const properPartit = totsPartits
 
   .filter(p =>
@@ -590,22 +591,12 @@ const properPartit = totsPartits
 
   })[0];
 
-return properPartit || totsPartits[0];
+// si no hi ha pròxim partit
+if (!properPartit) {
+  return null;
+}
 
-        } catch (err) {
-
-          console.log(
-            "Error categoria:",
-            cat.equip
-          );
-
-          return [];
-
-        }
-
-      })
-
-    );
+return properPartit;
 
     // =====================================
     // FILTRAR NULLS
