@@ -480,10 +480,44 @@ return parseData(a) - parseData(b);
 });
 
 // =====================================
-// RETORNAR EL MÉS PROPER
+// PRIORITAT:
+// 1. RESULTAT < 48H
+// 2. PRÒXIM PARTIT
 // =====================================
 
-return totsPartits[0];
+const ara = new Date();
+
+// buscar resultat recent
+const resultatRecent = totsPartits.find(p => {
+
+  if (!p.jugat || !p.data) return false;
+
+  const match =
+    p.data.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+
+  if (!match) return false;
+
+  const [, d, m, y] = match;
+
+  const dataPartit =
+    new Date(`${y}-${m}-${d}`);
+
+  const diferencia =
+    (ara - dataPartit) /
+    (1000 * 60 * 60);
+
+  return diferencia <= 48;
+
+});
+
+// si existeix resultat recent
+if (resultatRecent) {
+  return resultatRecent;
+}
+
+// si no → pròxim partit
+return totsPartits.find(p => !p.jugat)
+  || totsPartits[0];
 
         } catch (err) {
 
