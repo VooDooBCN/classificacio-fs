@@ -199,6 +199,12 @@ const visitant = equips.eq(1)
         .trim()
         .toUpperCase();
       
+console.log(
+  equipNom,
+  local,
+  visitant,
+  marcador
+);
 
       // =====================================
       // DATA
@@ -250,9 +256,11 @@ if (marcador.match(/\d+\s*-\s*\d+/)) {
       // =====================================
 
 const esResultat =
-  marcador.match(/\d+\s*-\s*\d+/);
+  /^\d+\s*-\s*\d+$/.test(marcador);
 
-      const jugat = esResultat;
+const jugat =
+  esResultat &&
+  marcador !== "SUSPÈS";
 
       // =====================================
       // ESTATS ESPECIALS
