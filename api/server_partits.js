@@ -524,14 +524,39 @@ if (resultatRecent) {
 }
 
 // si no → pròxim partit REAL
-const properPartit = totsPartits.find(p =>
+const properPartit = totsPartits
 
-  !p.jugat &&
-  p.hora !== "SUSPÈS" &&
-  p.hora !== "RETIRAT" &&
-  p.hora !== "DESCANSA"
+  .filter(p =>
 
-);
+    !p.jugat &&
+    p.hora !== "SUSPÈS" &&
+    p.hora !== "RETIRAT" &&
+    p.hora !== "DESCANSA"
+
+  )
+
+  .sort((a, b) => {
+
+    const parseData = (partit) => {
+
+      const txt = partit.data || "";
+
+      const match =
+        txt.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+
+      if (!match) return Infinity;
+
+      const [, d, m, y] = match;
+
+      return new Date(
+        `${y}-${m}-${d}`
+      ).getTime();
+
+    };
+
+    return parseData(a) - parseData(b);
+
+  })[0];
 
 return properPartit || totsPartits[0];
 
