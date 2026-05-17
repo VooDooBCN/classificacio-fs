@@ -495,29 +495,61 @@ return parseData(a) - parseData(b);
 
 const ara = new Date();
 
-// buscar resultat recent
-const resultatRecent = totsPartits.find(p => {
+// buscar resultat recent REAL
+const resultatRecent = totsPartits
 
-  if (!p.jugat || !p.data) return false;
+  .filter(p => {
 
-  const match =
-    p.data.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (!p.jugat || !p.data) {
+      return false;
+    }
 
-  if (!match) return false;
+    const match =
+      p.data.match(
+        /(\d{2})[\/-](\d{2})[\/-](\d{4})/
+      );
 
-  const [, d, m, y] = match;
+    if (!match) {
+      return false;
+    }
 
-  const dataPartit =
-    new Date(`${y}-${m}-${d}`);
+    const [, d, m, y] = match;
 
-  const diferencia =
-    (ara - dataPartit) /
-    (1000 * 60 * 60);
+    const dataPartit =
+      new Date(`${y}-${m}-${d}`);
 
-  return diferencia <= 48;
+    const diferencia =
+      (ara - dataPartit) /
+      (1000 * 60 * 60);
 
-});
+    return diferencia <= 48;
 
+  })
+
+  .sort((a, b) => {
+
+    const parseData = (partit) => {
+
+      const txt = partit.data || "";
+
+      const match =
+        txt.match(
+          /(\d{2})[\/-](\d{2})[\/-](\d{4})/
+        );
+
+      if (!match) return 0;
+
+      const [, d, m, y] = match;
+
+      return new Date(
+        `${y}-${m}-${d}`
+      ).getTime();
+
+    };
+
+    return parseData(b) - parseData(a);
+
+  })[0];
 // si existeix resultat recent
 if (resultatRecent) {
   return resultatRecent;
