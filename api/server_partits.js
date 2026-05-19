@@ -147,7 +147,7 @@ if (!competicio) {
     // TAULA PARTITS
     // =====================================
 
-    const files = $(".table_resultats tr");
+    const files = $("tr");
 
     if (!files.length) return [];
 
