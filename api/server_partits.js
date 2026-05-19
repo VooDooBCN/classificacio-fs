@@ -466,11 +466,11 @@ const urlJornada =
       urlJornada
     );
 
-    const partitsJornada =
-      await obtenirPartit(
-        urlJornada,
-        cat.equip
-      );
+const partitsJornada =
+  await obtenirPartitResultats(
+    urlJornada,
+    cat.equip
+  );
 
     if (partitsJornada.length) {
 
