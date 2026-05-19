@@ -110,7 +110,7 @@ const categories = [
 // OBTENIR PARTIT
 // =====================================
 
-async function obtenirPartit(url, equipNom) {
+async function obtenirPartitEquip(url, equipNom) {
 
   try {
 
@@ -345,6 +345,32 @@ return futursPartits;
     return [];
 
   }
+
+}
+
+// =====================================
+// RESULTATS
+// =====================================
+
+async function obtenirPartitResultats(url, equipNom) {
+
+  return await obtenirPartitEquip(
+    url,
+    equipNom
+  );
+
+}
+
+// =====================================
+// CALENDARI
+// =====================================
+
+async function obtenirPartitCalendari(url, equipNom) {
+
+  return await obtenirPartitEquip(
+    url,
+    equipNom
+  );
 
 }
 
