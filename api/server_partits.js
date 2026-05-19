@@ -356,6 +356,8 @@ return futursPartits;
 
 async function obtenirPartitResultats(url, equipNom) {
 
+console.log("ENTRA CALENDARI:", equipNom);  
+  
   return await obtenirPartitEquip(
     url,
     equipNom
