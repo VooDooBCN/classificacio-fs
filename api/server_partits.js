@@ -16,7 +16,7 @@ const PORT = 3001;
 let cachePartits = [];
 let lastFetch = 0;
 
-const CACHE_TIME = 1000 * 60 * 15; // 15 min
+const CACHE_TIME = 0; // 15 min
 
 // =====================================
 // CATEGORIES DEL CLUB
