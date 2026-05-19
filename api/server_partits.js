@@ -71,7 +71,7 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/equip/2526/2is/parets-fs-a"
+    url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
   },
 
   {
@@ -120,8 +120,9 @@ async function obtenirPartit(url, equipNom) {
 
     const $ = cheerio.load(data);
 
-    const esPaginaEquip =
-      url.includes("/equip/");
+const esPaginaEquip =
+  url.includes("/equip/") ||
+  url.includes("/calendari-equip/");
 
     // =====================================
     // COMPETICIÓ
