@@ -533,21 +533,6 @@ return totsPartits[0];
 
     );
 
-        } catch (err) {
-
-          console.log(
-            "Error categoria:",
-            cat.equip
-          );
-
-          return [];
-
-        }
-
-      })
-
-    );
-
     // =====================================
     // FILTRAR NULLS
     // =====================================
