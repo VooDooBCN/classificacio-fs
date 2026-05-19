@@ -24,85 +24,85 @@ const CACHE_TIME = 0; // 15 min
 
 const categories = [
 
-  {
-    equip: "Sènior A",
-    url: "https://www.fcf.cat/equip/2526/dh/parets-fs-a"
-  },
+//  {
+//    equip: "Sènior A",
+//    url: "https://www.fcf.cat/equip/2526/dh/parets-fs-a"
+//  },
 
-  {
-    equip: "Sènior Femení",
-    url: "https://www.fcf.cat/equip/2526/1sf/parets-fs-a"
-  },
+//  {
+//    equip: "Sènior Femení",
+//    url: "https://www.fcf.cat/equip/2526/1sf/parets-fs-a"
+//  },
 
-  {
-    equip: "Sènior B",
-    url: "https://www.fcf.cat/equip/2526/as3/parets-fs-b"
-  },
+//  {
+//    equip: "Sènior B",
+//    url: "https://www.fcf.cat/equip/2526/as3/parets-fs-b"
+//  },
 
-  {
-    equip: "Juvenil A",
-    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-a"
-  },
+//  {
+//    equip: "Juvenil A",
+//    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-a"
+//  },
 
-  {
-    equip: "Juvenil B",
-    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-b"
-  },
+//  {
+//    equip: "Juvenil B",
+//    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-b"
+//  },
 
-  {
-    equip: "Juvenil C",
-    url: "https://www.fcf.cat/equip/2526/3js/parets-fs-c"
-  },
+//  {
+//    equip: "Juvenil C",
+//    url: "https://www.fcf.cat/equip/2526/3js/parets-fs-c"
+//  },
 
-  {
-    equip: "Cadet A",
-    url: "https://www.fcf.cat/equip/2526/1cs/parets-fs-a"
-  },
+//  {
+//    equip: "Cadet A",
+//    url: "https://www.fcf.cat/equip/2526/1cs/parets-fs-a"
+//  },
 
-  {
-    equip: "Cadet B",
-    url: "https://www.fcf.cat/equip/2526/2cs/parets-fs-b"
-  },
+//  {
+//    equip: "Cadet B",
+//    url: "https://www.fcf.cat/equip/2526/2cs/parets-fs-b"
+//  },
 
-  {
-    equip: "Cadet Femení",
-    url: ""
-  },
+//  {
+//    equip: "Cadet Femení",
+//    url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-promocio-cadet-femeni-futbol-sala-3a-fase/grup-2"
+//  },
 
   {
     equip: "Infantil A",
     url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
   },
 
-  {
-    equip: "Infantil B",
-    url: "https://www.fcf.cat/equip/2526/3is/parets-fs-b"
-  },
+//  {
+//    equip: "Infantil B",
+//    url: "https://www.fcf.cat/equip/2526/3is/parets-fs-b"
+//  },
 
-  {
-    equip: "Aleví A",
-    url: "https://www.fcf.cat/equip/2526/1sa/parets-fs-a"
-  },
+//  {
+//    equip: "Aleví A",
+//    url: "https://www.fcf.cat/equip/2526/1sa/parets-fs-a"
+//  },
 
-  {
-    equip: "Aleví B",
-    url: "https://www.fcf.cat/equip/2526/2sa/parets-fs-b"
-  },
+//  {
+//    equip: "Aleví B",
+//    url: "https://www.fcf.cat/equip/2526/2sa/parets-fs-b"
+//  },
 
-  {
-    equip: "Benjamí A",
-    url: ""
-  },
+//  {
+//    equip: "Benjamí A",
+//    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-promocio-benjami-futbol-sala/bcn-gr-2"
+//  },
 
-  {
-    equip: "Prebenjamí A",
-    url: ""
-  },
+//  {
+//    equip: "Prebenjamí A",
+//    url: "https://www.fcf.cat/resultats/2526/futbol-sala/segona-fase-lliga-promocio-prebenjami-futbol-sala/grup-2"
+//  },
 
-  {
-    equip: "Miniprebenjamí A",
-    url: ""
-  }
+//  {
+//    equip: "Miniprebenjamí A",
+//    url: "https://www.fcf.cat/resultats/2526/futbol-sala/copa-catalunya-miniprebenjami-futbol-sala/grup-3"
+//  }
 
 ];
 
