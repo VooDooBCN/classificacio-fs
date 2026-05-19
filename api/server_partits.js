@@ -414,11 +414,39 @@ app.get("/api/partits", async (req, res) => {
 let totsPartits = [];
 
 // jornada principal
-const partitsInicials =
-  await obtenirPartit(
-    cat.url,
-    cat.equip
-  );
+let partitsInicials = [];
+
+if (cat.url.includes("/resultats/")) {
+
+  partitsInicials =
+    await obtenirPartitResultats(
+      cat.url,
+      cat.equip
+    );
+
+}
+
+else if (
+  cat.url.includes("/calendari-equip/")
+) {
+
+  partitsInicials =
+    await obtenirPartitCalendari(
+      cat.url,
+      cat.equip
+    );
+
+}
+
+else {
+
+  partitsInicials =
+    await obtenirPartitEquip(
+      cat.url,
+      cat.equip
+    );
+
+}
 
 totsPartits.push(...partitsInicials);
 
