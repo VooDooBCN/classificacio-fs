@@ -66,7 +66,7 @@ const categories = [
 
   {
     equip: "Cadet Femení",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-promocio-cadet-femeni-futbol-sala-3a-fase/grup-2"
+    url: ""
   },
 
   {
@@ -91,17 +91,17 @@ const categories = [
 
   {
     equip: "Benjamí A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-promocio-benjami-futbol-sala/bcn-gr-2"
+    url: ""
   },
 
   {
     equip: "Prebenjamí A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/segona-fase-lliga-promocio-prebenjami-futbol-sala/grup-2"
+    url: ""
   },
 
   {
     equip: "Miniprebenjamí A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/copa-catalunya-miniprebenjami-futbol-sala/grup-3"
+    url: ""
   }
 
 ];
