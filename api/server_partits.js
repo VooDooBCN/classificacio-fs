@@ -119,6 +119,8 @@ async function obtenirPartitEquip(url, equipNom) {
     });
 
     const $ = cheerio.load(data);
+    
+    console.log(data.substring(0, 5000));
 
     const esPaginaEquip =
       url.includes("/equip/");
