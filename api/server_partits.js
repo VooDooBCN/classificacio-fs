@@ -71,7 +71,7 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
+    url: "https://www.fcf.cat/equip/2526/2is/parets-fs-a"
   },
 
   {
@@ -120,9 +120,8 @@ async function obtenirPartit(url, equipNom) {
 
     const $ = cheerio.load(data);
 
-const esPaginaEquip =
-  url.includes("/equip/") ||
-  url.includes("/calendari-equip/");
+    const esPaginaEquip =
+      url.includes("/equip/");
 
     // =====================================
     // COMPETICIÓ
@@ -147,7 +146,7 @@ if (!competicio) {
     // TAULA PARTITS
     // =====================================
 
-    const files = $("tr");
+    const files = $(".table_resultats tr");
 
     if (!files.length) return [];
 
@@ -167,8 +166,8 @@ const filesArray = esPaginaEquip
     
     for (const el of filesArray) {
 
-const equips = $(el)
-  .find("a");
+      const equips = $(el)
+        .find(".resultats-w-equip a");
 
       if (equips.length < 1) continue;
 
@@ -481,41 +480,9 @@ return parseData(a) - parseData(b);
 });
 
 // =====================================
-// BUSCAR PARTIT MÉS PROPER
+// RETORNAR EL MÉS PROPER
 // =====================================
 
-const ara = new Date();
-
-totsPartits.sort((a, b) => {
-
-  const parseData = (partit) => {
-
-    if (!partit.data) return Infinity;
-
-    const match =
-      partit.data.match(
-        /(\d{2})[\/-](\d{2})[\/-](\d{4})/
-      );
-
-    if (!match) return Infinity;
-
-    const [, d, m, y] = match;
-
-    return new Date(
-      `${y}-${m}-${d}`
-    ).getTime();
-
-  };
-
-  const dataA = parseData(a);
-  const dataB = parseData(b);
-
-  return Math.abs(dataA - ara) -
-         Math.abs(dataB - ara);
-
-});
-
-// retornar el més proper
 return totsPartits[0];
 
         } catch (err) {
