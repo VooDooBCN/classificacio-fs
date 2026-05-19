@@ -71,7 +71,7 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/equip/2526/2is/parets-fs-a"
+    url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
   },
 
   {
@@ -367,10 +367,144 @@ async function obtenirPartitResultats(url, equipNom) {
 
 async function obtenirPartitCalendari(url, equipNom) {
 
-  return await obtenirPartitEquip(
-    url,
-    equipNom
-  );
+  try {
+
+    const { data } = await axios.get(url, {
+      timeout: 10000
+    });
+
+    const $ = cheerio.load(data);
+
+    const files =
+      $(".table_resultats tr");
+
+    if (!files.length) return [];
+
+    const partits = [];
+
+    for (const el of files) {
+
+      const equips = $(el)
+        .find("a");
+
+      if (equips.length < 2)
+        continue;
+
+      const local = equips.eq(0)
+        .text()
+        .trim();
+
+      const visitant = equips.eq(1)
+        .text()
+        .trim();
+
+      const esParets =
+        local.toLowerCase().includes("parets") ||
+        visitant.toLowerCase().includes("parets");
+
+      if (!esParets)
+        continue;
+
+      const marcador = $(el)
+        .find(".fs-17, .resultat")
+        .text()
+        .trim()
+        .toUpperCase();
+
+      const dataPartit = $(el)
+        .find(".lh-data")
+        .text()
+        .trim();
+
+      const imgs = $(el)
+        .find("img");
+
+      const logoLocal =
+        imgs.eq(0).attr("src") || "";
+
+      const logoVisitant =
+        imgs.eq(1).attr("src") || "";
+
+      const esResultat =
+        /\d+\s*-\s*\d+/.test(marcador);
+
+      const esCasa =
+        local.toLowerCase()
+        .includes("parets");
+
+      partits.push({
+
+        equip: equipNom,
+
+        competicio: "Calendari",
+
+        local,
+        visitant,
+
+        hora: marcador,
+
+        data: dataPartit,
+
+        jugat: esResultat,
+
+        esCasa,
+
+        logoLocal,
+        logoVisitant
+
+      });
+
+    }
+
+    // =====================================
+    // ORDENAR PER PROXIMITAT
+    // =====================================
+
+    const ara = new Date();
+
+    partits.sort((a, b) => {
+
+      const parseData = (partit) => {
+
+        if (!partit.data)
+          return Infinity;
+
+        const match =
+          partit.data.match(
+            /(\d{2})[\/-](\d{2})[\/-](\d{4})/
+          );
+
+        if (!match)
+          return Infinity;
+
+        const [, d, m, y] = match;
+
+        return new Date(
+          `${y}-${m}-${d}`
+        ).getTime();
+
+      };
+
+      return Math.abs(
+        parseData(a) - ara
+      ) - Math.abs(
+        parseData(b) - ara
+      );
+
+    });
+
+    return [partits[0]];
+
+  } catch (err) {
+
+    console.log(
+      "Error calendari:",
+      equipNom
+    );
+
+    return [];
+
+  }
 
 }
 
