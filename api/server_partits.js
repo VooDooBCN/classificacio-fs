@@ -481,25 +481,42 @@ return parseData(a) - parseData(b);
 });
 
 // =====================================
-// RETORNAR EL MÉS PROPER
+// BUSCAR PARTIT MÉS PROPER
 // =====================================
 
+const ara = new Date();
+
+totsPartits.sort((a, b) => {
+
+  const parseData = (partit) => {
+
+    if (!partit.data) return Infinity;
+
+    const match =
+      partit.data.match(
+        /(\d{2})[\/-](\d{2})[\/-](\d{4})/
+      );
+
+    if (!match) return Infinity;
+
+    const [, d, m, y] = match;
+
+    return new Date(
+      `${y}-${m}-${d}`
+    ).getTime();
+
+  };
+
+  const dataA = parseData(a);
+  const dataB = parseData(b);
+
+  return Math.abs(dataA - ara) -
+         Math.abs(dataB - ara);
+
+});
+
+// retornar el més proper
 return totsPartits[0];
-
-        } catch (err) {
-
-          console.log(
-            "Error categoria:",
-            cat.equip
-          );
-
-          return [];
-
-        }
-
-      })
-
-    );
 
     // =====================================
     // FILTRAR NULLS
