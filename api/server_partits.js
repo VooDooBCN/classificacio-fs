@@ -517,6 +517,7 @@ async function obtenirPartitCalendari(url, equipNom) {
 // =====================================
 
 app.get("/api/partits", async (req, res) => {
+  console.log("ENTRA API");
 
   try {
 
