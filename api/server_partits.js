@@ -167,8 +167,8 @@ const filesArray = esPaginaEquip
     
     for (const el of filesArray) {
 
-      const equips = $(el)
-        .find(".resultats-w-equip a");
+const equips = $(el)
+  .find("a");
 
       if (equips.length < 1) continue;
 
