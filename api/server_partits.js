@@ -15,7 +15,6 @@ const PORT = 3001;
 
 let cachePartits = [];
 let lastFetch = 0;
-const logosEquips = {};
 
 const CACHE_TIME = 1000 * 60 * 15; // 15 min
 
@@ -106,6 +105,17 @@ const categories = [
   }
 
 ];
+
+function slug(txt) {
+
+  return txt
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+}
 
 // =====================================
 // OBTENIR PARTIT
@@ -345,8 +355,11 @@ futursPartits.push({
 
   esCasa,
 
-  logoLocal,
-  logoVisitant
+logoLocal:
+  `/img/escuts/${slug(local)}.png`,
+
+logoVisitant:
+  `/img/escuts/${slug(visitant)}.png`,
 
 });
 
@@ -574,70 +587,6 @@ logoVisitant:
     return [];
 
   }
-
-}
-
-// =====================================
-// PRECARREGAR LOGOS
-// =====================================
-
-async function precarregarLogos() {
-
-  console.log("🔄 Precarregant logos...");
-
-  for (const cat of categories) {
-
-    if (!cat.url.includes("/resultats/"))
-      continue;
-
-    try {
-
-      for (
-        let jornada = 1;
-        jornada <= 30;
-        jornada++
-      ) {
-
-        const urlBase =
-          cat.url.replace(
-            /\/jornada-\d+/,
-            ""
-          );
-
-        const urlJornada =
-          `${urlBase}/jornada-${jornada}`;
-
-const partits =
-  await obtenirPartit(
-    urlJornada,
-    cat.equip
-  );
-
-console.log(
-  cat.equip,
-  "PARTITS:",
-  partits.length
-);
-
-      }
-
-    } catch (err) {
-
-      console.log(
-        "Error logos:",
-        cat.equip
-      );
-
-    }
-
-  }
-
-  console.log(
-  "LOGOS TOTALS:",
-  Object.keys(logosEquips).length
-);
-  
-  console.log("✅ Logos precarregats");
 
 }
 
