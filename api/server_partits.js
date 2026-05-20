@@ -354,16 +354,18 @@ futursPartits.push({
 
 return futursPartits;
 
-  } catch (err) {
+} catch (err) {
 
-    console.log(
-      "Error obtenint partit:",
-      equipNom
-    );
+  console.log(
+    "Error obtenint partit:",
+    equipNom
+  );
 
-    return [];
+  console.log(
+    err.message
+  );
 
-  }
+  return [];
 
 }
 
