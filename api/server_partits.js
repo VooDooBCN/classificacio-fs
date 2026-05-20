@@ -110,9 +110,18 @@ function slug(txt) {
 
   return txt
     .toLowerCase()
+
+    // eliminar accents
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+
+    // eliminar lletra final equip
+    .replace(/\s+[abcd]$/i, "")
+
+    // convertir separadors
     .replace(/[^a-z0-9]+/g, "-")
+
+    // treure guions inici/final
     .replace(/^-|-$/g, "");
 
 }
@@ -490,10 +499,10 @@ const esResultat =
         esCasa,
 
 logoLocal:
-  `img/escuts/${slug(local)}.png`,
+  `/img/escuts/${slug(local)}.png`,
 
 logoVisitant:
-  `img/escuts/${slug(visitant)}.png`
+  `/img/escuts/${slug(visitant)}.png`
 
       });
 
