@@ -413,13 +413,31 @@ console.log(
       if (equips.length < 2)
         continue;
 
-      const local = equips.eq(0)
-        .text()
-        .trim();
+const nomsEquips = [];
 
-      const visitant = equips.eq(1)
-        .text()
-        .trim();
+equips.each((i, a) => {
+
+  const txt = $(a)
+    .text()
+    .trim();
+
+  if (
+    txt &&
+    txt.length > 2 &&
+    !txt.includes("Jornada")
+  ) {
+
+    nomsEquips.push(txt);
+
+  }
+
+});
+
+if (nomsEquips.length < 2)
+  continue;
+
+const local = nomsEquips[0];
+const visitant = nomsEquips[1];
 
       const esParets =
         local.toLowerCase().includes("parets") ||
