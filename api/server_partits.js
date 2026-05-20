@@ -607,10 +607,17 @@ async function precarregarLogos() {
         const urlJornada =
           `${urlBase}/jornada-${jornada}`;
 
-        await obtenirPartit(
-          urlJornada,
-          cat.equip
-        );
+const partits =
+  await obtenirPartit(
+    urlJornada,
+    cat.equip
+  );
+
+console.log(
+  cat.equip,
+  "PARTITS:",
+  partits.length
+);
 
       }
 
