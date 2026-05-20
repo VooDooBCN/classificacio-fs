@@ -574,6 +574,58 @@ logoVisitant:
 }
 
 // =====================================
+// PRECARREGAR LOGOS
+// =====================================
+
+async function precarregarLogos() {
+
+  console.log("🔄 Precarregant logos...");
+
+  for (const cat of categories) {
+
+    if (!cat.url.includes("/resultats/"))
+      continue;
+
+    try {
+
+      for (
+        let jornada = 1;
+        jornada <= 30;
+        jornada++
+      ) {
+
+        const urlBase =
+          cat.url.replace(
+            /\/jornada-\d+/,
+            ""
+          );
+
+        const urlJornada =
+          `${urlBase}/jornada-${jornada}`;
+
+        await obtenirPartit(
+          urlJornada,
+          cat.equip
+        );
+
+      }
+
+    } catch (err) {
+
+      console.log(
+        "Error logos:",
+        cat.equip
+      );
+
+    }
+
+  }
+
+  console.log("✅ Logos precarregats");
+
+}
+
+// =====================================
 // API PARTITS
 // =====================================
 
@@ -785,6 +837,8 @@ return totsPartits[0];
 // =====================================
 // START SERVER
 // =====================================
+
+precarregarLogos();
 
 app.listen(PORT, () => {
 
