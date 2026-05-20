@@ -326,10 +326,10 @@ futursPartits.push({
   esCasa,
 
 logoLocal:
-  `/img/escuts/${slug(local)}.png`,
+  `img/escuts/${slug(local)}.png`,
 
 logoVisitant:
-  `/img/escuts/${slug(visitant)}.png`,
+  `img/escuts/${slug(visitant)}.png`,
 
 });
 
@@ -490,10 +490,10 @@ const esResultat =
         esCasa,
 
 logoLocal:
-  `/img/escuts/${slug(local)}.png`,
+  `img/escuts/${slug(local)}.png`,
 
 logoVisitant:
-  `/img/escuts/${slug(visitant)}.png`
+  `img/escuts/${slug(visitant)}.png`
 
       });
 
@@ -522,7 +522,12 @@ logoVisitant:
 
         const [, d, m, y] = match;
 
-        return new Date(
+const hora =
+  /^\d{2}:\d{2}$/.test(partit.hora)
+    ? partit.hora
+    : "00:00";
+
+return new Date(
   `${y}-${m}-${d}T${hora}:00`
 ).getTime();
 
