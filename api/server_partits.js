@@ -111,11 +111,17 @@ function slug(txt) {
   return txt
     .toLowerCase()
 
-    // eliminar accents
+    // accents
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
 
-    // eliminar lletra final equip
+    // eliminar apostrofs
+    .replace(/['’]/g, "")
+
+    // eliminar punts i comes
+    .replace(/[.,]/g, "")
+
+    // eliminar lletra final equips
     .replace(/\s+[abcd]$/i, "")
 
     // convertir separadors
