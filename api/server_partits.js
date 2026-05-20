@@ -120,6 +120,14 @@ async function obtenirPartitEquip(url, equipNom) {
 
     const $ = cheerio.load(data);
     
+    console.log(
+  $(".table_resultats").length
+);
+
+console.log(
+  $("table").length
+);
+    
     console.log(data.substring(0, 5000));
 
     const esPaginaEquip =
