@@ -473,6 +473,10 @@ const visitant = nomsEquips[1];
         local.toLowerCase()
         .includes("parets");
 
+      console.log(
+  $(el).text()
+);
+      
       partits.push({
 
         equip: equipNom,
