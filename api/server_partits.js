@@ -15,8 +15,9 @@ const PORT = 3001;
 
 let cachePartits = [];
 let lastFetch = 0;
+const logosEquips = {};
 
-const CACHE_TIME = 0; // 15 min
+const CACHE_TIME = 1000 * 60 * 15; // 15 min
 
 // =====================================
 // CATEGORIES DEL CLUB
@@ -294,6 +295,14 @@ const esDescansa =
 
       const logoVisitant =
         imgs.eq(1).attr("src") || "";
+      
+      if (logoLocal) {
+  logosEquips[local] = logoLocal;
+}
+
+if (logoVisitant) {
+  logosEquips[visitant] = logoVisitant;
+}
 
       // =====================================
       // CASA / FORA
@@ -363,8 +372,6 @@ return futursPartits;
 // =====================================
 
 async function obtenirPartitResultats(url, equipNom) {
-
-console.log("ENTRA CALENDARI:", equipNom);  
   
   return await obtenirPartitEquip(
     url,
@@ -378,7 +385,6 @@ console.log("ENTRA CALENDARI:", equipNom);
 // =====================================
 
 async function obtenirPartitCalendari(url, equipNom) {
-  console.log("ENTRA CALENDARI", equipNom);
 
   try {
 
@@ -391,11 +397,6 @@ async function obtenirPartitCalendari(url, equipNom) {
 const files =
   $("tr");
 
-console.log(
-  "FILES TROBADES:",
-  files.length
-);
-
     if (!files.length) return [];
 
     const partits = [];
@@ -404,11 +405,6 @@ console.log(
 
 const equips = $(el)
   .find("a");
-
-console.log(
-  "EQUIPS:",
-  equips.length
-);
 
       if (equips.length < 2)
         continue;
@@ -497,10 +493,6 @@ const esResultat =
       const esCasa =
         local.toLowerCase()
         .includes("parets");
-
-      console.log(
-  $(el).text()
-);
       
       partits.push({
 
@@ -519,8 +511,11 @@ const esResultat =
 
         esCasa,
 
-        logoLocal,
-        logoVisitant
+        logoLocal:
+  logosEquips[local] || "",
+
+logoVisitant:
+  logosEquips[visitant] || ""
 
       });
 
@@ -583,7 +578,6 @@ const esResultat =
 // =====================================
 
 app.get("/api/partits", async (req, res) => {
-  console.log("ENTRA API");
 
   try {
 
