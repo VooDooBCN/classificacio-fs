@@ -461,7 +461,7 @@ const horaMatch =
 
 const resultatMatch =
   textFila.match(
-    /\d+\s*-\s*\d+/
+    /\b\d+\s*-\s*\d+\b/g
   );
 
 const dataPartit =
@@ -488,8 +488,9 @@ const marcador =
       const logoVisitant =
         imgs.eq(1).attr("src") || "";
 
-      const esResultat =
-        /\d+\s*-\s*\d+/.test(marcador);
+const esResultat =
+  resultatMatch &&
+  marcador.includes("-");
 
       const esCasa =
         local.toLowerCase()
