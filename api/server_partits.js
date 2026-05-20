@@ -388,8 +388,13 @@ async function obtenirPartitCalendari(url, equipNom) {
 
     const $ = cheerio.load(data);
 
-    const files =
-      $(".table_resultats tr");
+const files =
+  $("tr");
+
+console.log(
+  "FILES TROBADES:",
+  files.length
+);
 
     if (!files.length) return [];
 
@@ -397,8 +402,13 @@ async function obtenirPartitCalendari(url, equipNom) {
 
     for (const el of files) {
 
-      const equips = $(el)
-        .find("a");
+const equips = $(el)
+  .find("a");
+
+console.log(
+  "EQUIPS:",
+  equips.length
+);
 
       if (equips.length < 2)
         continue;
