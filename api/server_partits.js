@@ -131,16 +131,6 @@ async function obtenirPartitEquip(url, equipNom) {
 
     const $ = cheerio.load(data);
     
-    console.log(
-  $(".table_resultats").length
-);
-
-console.log(
-  $("table").length
-);
-    
-    console.log(data.substring(0, 5000));
-
     const esPaginaEquip =
       url.includes("/equip/");
 
@@ -533,8 +523,8 @@ logoVisitant:
         const [, d, m, y] = match;
 
         return new Date(
-          `${y}-${m}-${d}`
-        ).getTime();
+  `${y}-${m}-${d}T${hora}:00`
+).getTime();
 
       };
 
