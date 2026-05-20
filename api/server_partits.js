@@ -621,6 +621,11 @@ async function precarregarLogos() {
 
   }
 
+  console.log(
+  "LOGOS TOTALS:",
+  Object.keys(logosEquips).length
+);
+  
   console.log("✅ Logos precarregats");
 
 }
