@@ -477,7 +477,7 @@ const hora =
 const marcador =
   resultatMatch
     ? resultatMatch[0]
-    : hora;
+    : hora || "";
 
       const imgs = $(el)
         .find("img");
@@ -508,7 +508,7 @@ const marcador =
         local,
         visitant,
 
-        hora: marcador,
+        hora: marcador || hora,
 
         data: dataPartit,
 
