@@ -295,26 +295,6 @@ const esDescansa =
         marcador === "" && !esPaginaEquip;
 
       // =====================================
-      // LOGOS
-      // =====================================
-
-      const imgs = $(el).find("img");
-
-      const logoLocal =
-        imgs.eq(0).attr("src") || "";
-
-      const logoVisitant =
-        imgs.eq(1).attr("src") || "";
-      
-      if (logoLocal) {
-  logosEquips[local] = logoLocal;
-}
-
-if (logoVisitant) {
-  logosEquips[visitant] = logoVisitant;
-}
-
-      // =====================================
       // CASA / FORA
       // =====================================
 
@@ -492,15 +472,6 @@ const marcador =
     ? resultatMatch[0]
     : hora || "";
 
-      const imgs = $(el)
-        .find("img");
-
-      const logoLocal =
-        imgs.eq(0).attr("src") || "";
-
-      const logoVisitant =
-        imgs.eq(1).attr("src") || "";
-
 const esResultat =
   !!(
     resultatMatch &&
@@ -528,11 +499,11 @@ const esResultat =
 
         esCasa,
 
-        logoLocal:
-  logosEquips[local] || "",
+logoLocal:
+  `/img/escuts/${slug(local)}.png`,
 
 logoVisitant:
-  logosEquips[visitant] || ""
+  `/img/escuts/${slug(visitant)}.png`
 
       });
 
@@ -802,8 +773,6 @@ return totsPartits[0];
 // =====================================
 // START SERVER
 // =====================================
-
-precarregarLogos();
 
 app.listen(PORT, () => {
 
