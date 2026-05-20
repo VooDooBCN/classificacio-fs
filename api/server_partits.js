@@ -370,6 +370,7 @@ console.log("ENTRA CALENDARI:", equipNom);
 // =====================================
 
 async function obtenirPartitCalendari(url, equipNom) {
+  console.log("ENTRA CALENDARI", equipNom);
 
   try {
 
