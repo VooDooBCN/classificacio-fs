@@ -446,16 +446,38 @@ const visitant = nomsEquips[1];
       if (!esParets)
         continue;
 
-      const marcador = $(el)
-        .find(".fs-17, .resultat")
-        .text()
-        .trim()
-        .toUpperCase();
+const textFila =
+  $(el).text();
 
-      const dataPartit = $(el)
-        .find(".lh-data")
-        .text()
-        .trim();
+const dataMatch =
+  textFila.match(
+    /\d{2}-\d{2}-\d{4}/
+  );
+
+const horaMatch =
+  textFila.match(
+    /\d{2}:\d{2}/
+  );
+
+const resultatMatch =
+  textFila.match(
+    /\d+\s*-\s*\d+/
+  );
+
+const dataPartit =
+  dataMatch
+    ? dataMatch[0]
+    : "";
+
+const hora =
+  horaMatch
+    ? horaMatch[0]
+    : "";
+
+const marcador =
+  resultatMatch
+    ? resultatMatch[0]
+    : hora;
 
       const imgs = $(el)
         .find("img");
