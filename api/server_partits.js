@@ -489,8 +489,10 @@ const marcador =
         imgs.eq(1).attr("src") || "";
 
 const esResultat =
-  resultatMatch &&
-  marcador.includes("-");
+  !!(
+    resultatMatch &&
+    marcador.includes("-")
+  );
 
       const esCasa =
         local.toLowerCase()
