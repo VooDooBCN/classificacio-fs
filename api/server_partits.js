@@ -461,7 +461,7 @@ const horaMatch =
 
 const resultatMatch =
   textFila.match(
-    /\b\d+\s*-\s*\d+\b/g
+    /(?<!\d{2}-)\b\d+\s*-\s*\d+\b(?!-\d{4})/
   );
 
 const dataPartit =
