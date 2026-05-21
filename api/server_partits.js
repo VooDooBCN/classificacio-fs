@@ -72,7 +72,7 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
   },
 
   {
