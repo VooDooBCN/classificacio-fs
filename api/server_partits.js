@@ -491,58 +491,90 @@ else {
 
 totsPartits.push(...partitsInicials);
 
-// jornades extra
+// =====================================
+// JORNADES EXTRA
+// =====================================
+
 if (cat.url.includes("/resultats/")) {
 
-const avui = new Date();
+  const esLligaCurta =
 
-const mes =
-  avui.getMonth() + 1;
+    cat.equip.includes("Cadet Femení") ||
+    cat.equip.includes("Benjamí A") ||
+    cat.equip.includes("Prebenjamí A") ||
+    cat.equip.includes("Miniprebenjamí");
 
-let inici = 2;
-let final = 5;
+  let inici;
+  let final;
 
-// gener-febrer
-if (mes >= 1) {
-  inici = 6;
-  final = 12;
-}
+  // =====================================
+  // LLIGUES CURTES
+  // =====================================
 
-// març-abril
-if (mes >= 3) {
-  inici = 13;
-  final = 18;
-}
+  if (esLligaCurta) {
 
-// maig-juny
-if (mes >= 5) {
-  inici = 16;
-  final = 26;
-}
+    inici = 2;
+    final = 15;
 
-for (
-  let jornada = inici;
-  jornada <= final;
-  jornada++
-){
+  }
 
- const urlBase =
-  cat.url.replace(/\/jornada-\d+/, "");
+  // =====================================
+  // LLIGUES NORMALS
+  // =====================================
 
-const urlJornada =
-  `${urlBase}/jornada-${jornada}`;
+  else {
+
+    const avui = new Date();
+
+    const mes =
+      avui.getMonth() + 1;
+
+    inici = 2;
+    final = 5;
+
+    // gener-febrer
+    if (mes >= 1) {
+      inici = 6;
+      final = 12;
+    }
+
+    // març-abril
+    if (mes >= 3) {
+      inici = 13;
+      final = 18;
+    }
+
+    // maig-juny
+    if (mes >= 5) {
+      inici = 16;
+      final = 26;
+    }
+
+  }
+
+  for (
+    let jornada = inici;
+    jornada <= final;
+    jornada++
+  ) {
+
+    const urlBase =
+      cat.url.replace(/\/jornada-\d+/, "");
+
+    const urlJornada =
+      `${urlBase}/jornada-${jornada}`;
 
     console.log(
       `➡️ Provant jornada ${jornada}:`,
       urlJornada
     );
 
-const partitsJornada =
-  await obtenirPartitResultats(
-    urlJornada,
-    cat.equip,
-    jornada
-  );
+    const partitsJornada =
+      await obtenirPartitResultats(
+        urlJornada,
+        cat.equip,
+        jornada
+      );
 
     if (partitsJornada.length) {
 
@@ -558,6 +590,7 @@ const partitsJornada =
 if (!totsPartits.length) {
   return null;
 }
+
 
 // =====================================
 // ORDENAR PER DATA
