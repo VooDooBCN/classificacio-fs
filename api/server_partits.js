@@ -562,7 +562,9 @@ logoVisitant:
 
     });
 
-    return [partits[0]];
+return partits.length
+  ? [partits[0]]
+  : [];
 
   } catch (err) {
 
