@@ -387,14 +387,14 @@ async function precarregarLogos() {
     if (!cat.url.includes("/resultats/"))
       continue;
 
-    try {
+try {
 
-await obtenirPartitResultats(
-  urlJornada,
-  cat.equip
-);
+  await obtenirPartitResultats(
+    cat.url,
+    cat.equip
+  );
 
-    } catch (err) {
+} catch (err) {
 
       console.log(
         "Error logos:",
@@ -481,7 +481,7 @@ totsPartits.push(...partitsInicials);
 // jornades extra
 if (cat.url.includes("/resultats/")) {
 
-  for (let jornada = 2; jornada <= 15; jornada++) {
+for (let jornada = 2; jornada <= 26; jornada++){
 
  const urlBase =
   cat.url.replace(/\/jornada-\d+/, "");
