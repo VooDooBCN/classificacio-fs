@@ -27,42 +27,42 @@ const categories = [
 
   {
     equip: "Sènior A",
-    url: "https://www.fcf.cat/equip/2526/dh/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-divisio-honor-catalana-futbol-sala/bcn-gr-1"
   },
 
   {
     equip: "Sènior Femení",
-    url: "https://www.fcf.cat/equip/2526/1sf/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-primera-divisio-femeni-futbol-sala/bcn-gr-1"
   },
 
   {
     equip: "Sènior B",
-    url: "https://www.fcf.cat/equip/2526/as3/parets-fs-b"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-catalana-futbol-sala/bcn-gr4"
   },
 
   {
     equip: "Juvenil A",
-    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-juvenil-futbol-sala/bcn-gr1"
   },
 
   {
     equip: "Juvenil B",
-    url: "https://www.fcf.cat/equip/2526/2js/parets-fs-b"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-juvenil-futbol-sala/bcn-gr2"
   },
 
   {
     equip: "Juvenil C",
-    url: "https://www.fcf.cat/equip/2526/3js/parets-fs-c"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-juvenil-futbol-sala/bcn-gr-2"
   },
 
   {
     equip: "Cadet A",
-    url: "https://www.fcf.cat/equip/2526/1cs/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-primera-divisio-cadet-futbol-sala/bcn-gr-1"
   },
 
   {
     equip: "Cadet B",
-    url: "https://www.fcf.cat/equip/2526/2cs/parets-fs-b"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-cadet-futbol-sala/bcn-gr1"
   },
 
   {
@@ -72,22 +72,22 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
   },
 
   {
     equip: "Infantil B",
-    url: "https://www.fcf.cat/equip/2526/3is/parets-fs-b"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-tercera-divisio-infantil-futbol-sala/bcn-gr-3"
   },
 
   {
     equip: "Aleví A",
-    url: "https://www.fcf.cat/equip/2526/1sa/parets-fs-a"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-primera-divisio-alevi-futbol-sala/bcn-gr-1"
   },
 
   {
     equip: "Aleví B",
-    url: "https://www.fcf.cat/equip/2526/2sa/parets-fs-b"
+    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-alevi-futbol-sala/bcn-gr2"
   },
 
   {
@@ -375,199 +375,6 @@ async function obtenirPartitResultats(url, equipNom) {
 }
 
 // =====================================
-// CALENDARI
-// =====================================
-
-async function obtenirPartitCalendari(url, equipNom) {
-
-  try {
-
-    const { data } = await axios.get(url, {
-      timeout: 10000
-    });
-
-    const $ = cheerio.load(data);
-
-const files =
-  $("tr");
-
-    if (!files.length) return [];
-
-    const partits = [];
-
-    for (const el of files) {
-
-const equips = $(el)
-  .find("a");
-
-      if (equips.length < 2)
-        continue;
-
-const nomsEquips = [];
-
-equips.each((i, a) => {
-
-  const txt = $(a)
-    .text()
-    .trim();
-
-  if (
-    txt &&
-    txt.length > 2 &&
-    !txt.includes("Jornada")
-  ) {
-
-    nomsEquips.push(txt);
-
-  }
-
-});
-
-if (nomsEquips.length < 2)
-  continue;
-
-const local = nomsEquips[0];
-const visitant = nomsEquips[1];
-
-      const esParets =
-        local.toLowerCase().includes("parets") ||
-        visitant.toLowerCase().includes("parets");
-
-      if (!esParets)
-        continue;
-
-const textFila =
-  $(el).text();
-
-const dataMatch =
-  textFila.match(
-    /\d{2}-\d{2}-\d{4}/
-  );
-
-const horaMatch =
-  textFila.match(
-    /\d{2}:\d{2}/
-  );
-
-const resultatMatch =
-  textFila.match(
-    /(?<!\d{2}-)\b\d+\s*-\s*\d+\b(?!-\d{4})/
-  );
-
-const dataPartit =
-  dataMatch
-    ? dataMatch[0]
-    : "";
-
-const hora =
-  horaMatch
-    ? horaMatch[0]
-    : "";
-
-const marcador =
-  resultatMatch
-    ? resultatMatch[0]
-    : hora || "";
-
-      const imgs = $(el)
-        .find("img");
-
-      const logoLocal =
-        imgs.eq(0).attr("src") || "";
-
-      const logoVisitant =
-        imgs.eq(1).attr("src") || "";
-
-const esResultat =
-  !!(
-    resultatMatch &&
-    marcador.includes("-")
-  );
-
-      const esCasa =
-        local.toLowerCase()
-        .includes("parets");
-      
-      partits.push({
-
-        equip: equipNom,
-
-        competicio: "Calendari",
-
-        local,
-        visitant,
-
-        hora: marcador || hora,
-
-        data: dataPartit,
-
-        jugat: esResultat,
-
-        esCasa,
-
-        logoLocal:
-  logosEquips[local] || "",
-
-logoVisitant:
-  logosEquips[visitant] || ""
-
-      });
-
-    }
-
-    // =====================================
-    // ORDENAR PER PROXIMITAT
-    // =====================================
-
-    const ara = new Date();
-
-    partits.sort((a, b) => {
-
-      const parseData = (partit) => {
-
-        if (!partit.data)
-          return Infinity;
-
-        const match =
-          partit.data.match(
-            /(\d{2})[\/-](\d{2})[\/-](\d{4})/
-          );
-
-        if (!match)
-          return Infinity;
-
-        const [, d, m, y] = match;
-
-        return new Date(
-          `${y}-${m}-${d}`
-        ).getTime();
-
-      };
-
-      return Math.abs(
-        parseData(a) - ara
-      ) - Math.abs(
-        parseData(b) - ara
-      );
-
-    });
-
-    return [partits[0]];
-
-  } catch (err) {
-
-    console.log(
-      "Error calendari:",
-      equipNom
-    );
-
-    return [];
-
-  }
-
-}
-
-// =====================================
 // PRECARREGAR LOGOS
 // =====================================
 
@@ -653,18 +460,6 @@ if (cat.url.includes("/resultats/")) {
 
   partitsInicials =
     await obtenirPartitResultats(
-      cat.url,
-      cat.equip
-    );
-
-}
-
-else if (
-  cat.url.includes("/calendari-equip/")
-) {
-
-  partitsInicials =
-    await obtenirPartitCalendari(
       cat.url,
       cat.equip
     );
