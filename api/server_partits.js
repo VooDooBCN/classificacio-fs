@@ -582,50 +582,10 @@ async function precarregarLogos() {
 
     try {
 
-     const avui = new Date();
-
-const mes =
-  avui.getMonth() + 1;
-
-let inici = 1;
-let final = 10;
-
-if (mes >= 1) {
-  inici = 6;
-  final = 15;
-}
-
-if (mes >= 3) {
-  inici = 11;
-  final = 20;
-}
-
-if (mes >= 5) {
-  inici = 12;
-  final = 26;
-}
-
-for (
-  let jornada = inici;
-  jornada <= final;
-  jornada++
-) {
-
-        const urlBase =
-          cat.url.replace(
-            /\/jornada-\d+/,
-            ""
-          );
-
-        const urlJornada =
-          `${urlBase}/jornada-${jornada}`;
-
-        await obtenirPartit(
-          urlJornada,
-          cat.equip
-        );
-
-      }
+      await obtenirPartit(
+        cat.url,
+        cat.equip
+      );
 
     } catch (err) {
 
@@ -639,10 +599,10 @@ for (
   }
 
   console.log(
-  "LOGOS TOTALS:",
-  Object.keys(logosEquips).length
-);
-  
+    "LOGOS TOTALS:",
+    Object.keys(logosEquips).length
+  );
+
   console.log("✅ Logos precarregats");
 
 }
