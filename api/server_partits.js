@@ -481,17 +481,35 @@ totsPartits.push(...partitsInicials);
 // jornades extra
 if (cat.url.includes("/resultats/")) {
 
-const jornadaActual = 26;
+const avui = new Date();
 
-const inici =
-  Math.max(
-    2,
-    jornadaActual - 10
-  );
+const mes =
+  avui.getMonth() + 1;
+
+let inici = 2;
+let final = 5;
+
+// gener-febrer
+if (mes >= 1) {
+  inici = 6;
+  final = 12;
+}
+
+// març-abril
+if (mes >= 3) {
+  inici = 13;
+  final = 18;
+}
+
+// maig-juny
+if (mes >= 5) {
+  inici = 16;
+  final = 26;
+}
 
 for (
   let jornada = inici;
-  jornada <= jornadaActual;
+  jornada <= final;
   jornada++
 ){
 
