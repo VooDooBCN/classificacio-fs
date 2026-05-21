@@ -71,6 +71,12 @@ const categories = [
     url: "https://www.fcf.cat/resultats/2526/futbol-sala-femeni/lliga-promocio-cadet-femeni-futbol-sala-3a-fase/grup-2"
   },
 
+{
+  equip: "_logos_Infantil A",
+  url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
+  mostrar: false
+},
+  
   {
     equip: "Infantil A",
     url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
@@ -705,6 +711,10 @@ else {
 
 totsPartits.push(...partitsInicials);
 
+if (cat.mostrar === false) {
+  return null;
+}
+          
 // jornades extra
 if (cat.url.includes("/resultats/")) {
 
