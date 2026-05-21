@@ -389,10 +389,10 @@ async function precarregarLogos() {
 
     try {
 
-      await obtenirPartit(
-        cat.url,
-        cat.equip
-      );
+await obtenirPartitResultats(
+  urlJornada,
+  cat.equip
+);
 
     } catch (err) {
 
