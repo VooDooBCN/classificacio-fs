@@ -15,7 +15,6 @@ const PORT = 3001;
 
 let cachePartits = [];
 let lastFetch = 0;
-const logosEquips = {};
 
 const CACHE_TIME = 1000 * 60 * 15; // 15 min
 
