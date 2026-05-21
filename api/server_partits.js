@@ -540,7 +540,8 @@ const urlJornada =
 const partitsJornada =
   await obtenirPartitResultats(
     urlJornada,
-    cat.equip
+    cat.equip,
+    jornada
   );
 
     if (partitsJornada.length) {
