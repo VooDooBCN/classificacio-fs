@@ -554,6 +554,32 @@ logoVisitant:
 
     });
 
+if (!logosEquips[local]) {
+
+  const imgLocal =
+    $(`img[alt*="${local}"]`)
+      .first()
+      .attr("src");
+
+  if (imgLocal) {
+    logosEquips[local] = imgLocal;
+  }
+
+}
+
+if (!logosEquips[visitant]) {
+
+  const imgVisitant =
+    $(`img[alt*="${visitant}"]`)
+      .first()
+      .attr("src");
+
+  if (imgVisitant) {
+    logosEquips[visitant] = imgVisitant;
+  }
+
+}    
+    
 return partits.length
   ? [partits[0]]
   : [];
