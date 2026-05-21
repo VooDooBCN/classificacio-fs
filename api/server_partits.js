@@ -73,7 +73,7 @@ const categories = [
 
 {
   equip: "_logos_Infantil A",
-  url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
+  url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1",
   mostrar: false
 },
   
