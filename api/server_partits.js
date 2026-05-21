@@ -72,7 +72,7 @@ const categories = [
 
   {
     equip: "Infantil A",
-    url: "https://www.fcf.cat/resultats/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1"
+    url: "https://www.fcf.cat/calendari-equip/2526/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr1/parets-fs-a"
   },
 
   {
@@ -587,29 +587,27 @@ async function precarregarLogos() {
 const mes =
   avui.getMonth() + 1;
 
-let jornadaActual = 10;
+let inici = 1;
+let final = 10;
 
 if (mes >= 1) {
-  jornadaActual = 15;
+  inici = 6;
+  final = 15;
 }
 
 if (mes >= 3) {
-  jornadaActual = 20;
+  inici = 11;
+  final = 20;
 }
 
 if (mes >= 5) {
-  jornadaActual = 26;
+  inici = 12;
+  final = 26;
 }
-
-const inici =
-  Math.max(
-    1,
-    jornadaActual - 9
-  );
 
 for (
   let jornada = inici;
-  jornada <= jornadaActual;
+  jornada <= final;
   jornada++
 ) {
 
