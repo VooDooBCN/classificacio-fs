@@ -15,6 +15,7 @@ const PORT = 3001;
 
 let cachePartits = [];
 let lastFetch = 0;
+const logosEquips = {};
 
 const CACHE_TIME = 1000 * 60 * 15; // 15 min
 
@@ -106,26 +107,6 @@ const categories = [
 
 ];
 
-function slug(txt) {
-
-  return txt
-    .toLowerCase()
-
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-
-    .replace(/[\\/'’]/g, "")
-
-    .replace(/[.,]/g, "")
-
-    .replace(/\s+[abcd]$/i, "")
-
-    .replace(/[^a-z0-9]+/g, "-")
-
-    .replace(/^-|-$/g, "");
-
-}
-
 // =====================================
 // OBTENIR PARTIT
 // =====================================
@@ -140,6 +121,16 @@ async function obtenirPartitEquip(url, equipNom) {
 
     const $ = cheerio.load(data);
     
+    console.log(
+  $(".table_resultats").length
+);
+
+console.log(
+  $("table").length
+);
+    
+    console.log(data.substring(0, 5000));
+
     const esPaginaEquip =
       url.includes("/equip/");
 
@@ -191,30 +182,13 @@ const filesArray = esPaginaEquip
 
       if (equips.length < 1) continue;
 
-const nomsEquips = [];
+const local = equips.eq(0)
+  .text()
+  .trim() || "";
 
-equips.each((i, a) => {
-
-  const txt = $(a)
-    .text()
-    .trim();
-
-  if (
-    txt &&
-    txt.length > 2
-  ) {
-
-    nomsEquips.push(txt);
-
-  }
-
-});
-
-if (nomsEquips.length < 2)
-  continue;
-
-const local = nomsEquips[0];
-const visitant = nomsEquips[1];
+const visitant = equips.eq(1)
+  .text()
+  .trim() || "";
 
       // =====================================
       // NOMÉS PARETS
@@ -311,6 +285,26 @@ const esDescansa =
         marcador === "" && !esPaginaEquip;
 
       // =====================================
+      // LOGOS
+      // =====================================
+
+      const imgs = $(el).find("img");
+
+      const logoLocal =
+        imgs.eq(0).attr("src") || "";
+
+      const logoVisitant =
+        imgs.eq(1).attr("src") || "";
+      
+      if (logoLocal) {
+  logosEquips[local] = logoLocal;
+}
+
+if (logoVisitant) {
+  logosEquips[visitant] = logoVisitant;
+}
+
+      // =====================================
       // CASA / FORA
       // =====================================
 
@@ -351,11 +345,8 @@ futursPartits.push({
 
   esCasa,
 
-logoLocal:
-  `img/escuts/${slug(local)}.png`,
-
-logoVisitant:
-  `img/escuts/${slug(visitant)}.png`,
+  logoLocal,
+  logoVisitant
 
 });
 
@@ -488,6 +479,15 @@ const marcador =
     ? resultatMatch[0]
     : hora || "";
 
+      const imgs = $(el)
+        .find("img");
+
+      const logoLocal =
+        imgs.eq(0).attr("src") || "";
+
+      const logoVisitant =
+        imgs.eq(1).attr("src") || "";
+
 const esResultat =
   !!(
     resultatMatch &&
@@ -515,11 +515,11 @@ const esResultat =
 
         esCasa,
 
-logoLocal:
-  `/img/escuts/${slug(local)}.png`,
+        logoLocal:
+  logosEquips[local] || "",
 
 logoVisitant:
-  `/img/escuts/${slug(visitant)}.png`
+  logosEquips[visitant] || ""
 
       });
 
@@ -548,14 +548,9 @@ logoVisitant:
 
         const [, d, m, y] = match;
 
-const hora =
-  /^\d{2}:\d{2}$/.test(partit.hora)
-    ? partit.hora
-    : "00:00";
-
-return new Date(
-  `${y}-${m}-${d}T${hora}:00`
-).getTime();
+        return new Date(
+          `${y}-${m}-${d}`
+        ).getTime();
 
       };
 
@@ -579,6 +574,63 @@ return new Date(
     return [];
 
   }
+
+}
+
+// =====================================
+// PRECARREGAR LOGOS
+// =====================================
+
+async function precarregarLogos() {
+
+  console.log("🔄 Precarregant logos...");
+
+  for (const cat of categories) {
+
+    if (!cat.url.includes("/resultats/"))
+      continue;
+
+    try {
+
+      for (
+        let jornada = 1;
+        jornada <= 30;
+        jornada++
+      ) {
+
+        const urlBase =
+          cat.url.replace(
+            /\/jornada-\d+/,
+            ""
+          );
+
+        const urlJornada =
+          `${urlBase}/jornada-${jornada}`;
+
+        await obtenirPartit(
+          urlJornada,
+          cat.equip
+        );
+
+      }
+
+    } catch (err) {
+
+      console.log(
+        "Error logos:",
+        cat.equip
+      );
+
+    }
+
+  }
+
+  console.log(
+  "LOGOS TOTALS:",
+  Object.keys(logosEquips).length
+);
+  
+  console.log("✅ Logos precarregats");
 
 }
 
@@ -794,6 +846,8 @@ return totsPartits[0];
 // =====================================
 // START SERVER
 // =====================================
+
+precarregarLogos();
 
 app.listen(PORT, () => {
 
