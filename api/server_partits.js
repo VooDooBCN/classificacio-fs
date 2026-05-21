@@ -124,9 +124,9 @@ async function obtenirPartitEquip(url, equipNom) {
     const esPaginaEquip =
       url.includes("/equip/");
 
-    // =====================================
-    // COMPETICIÓ
-    // =====================================
+// =====================================
+// COMPETICIÓ
+// =====================================
 
 let competicio = $(".fs-20.va-t")
   .first()
@@ -532,32 +532,39 @@ totsPartits = totsPartits.filter(
     );
 
   }
-);          
-          
+);
+
 totsPartits.sort((a, b) => {
 
- const parseData = (partit) => {
+  const parseData = (partit) => {
 
-  const txt = partit.data || "";
-const hora =
-  /^\d{2}:\d{2}$/.test(partit.hora)
-    ? partit.hora
-    : "00:00";
+    const txt = partit.data || "";
 
-  const match =
-    txt.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/)
+    const hora =
+      /^\d{2}:\d{2}$/.test(partit.hora)
+        ? partit.hora
+        : "00:00";
 
-  if (!match) return Infinity;
+    const match =
+      txt.match(/(\d{2})[\/-](\d{2})[\/-](\d{4})/);
 
-  const [, d, m, y] = match;
+    if (!match) return Infinity;
 
-  return new Date(
-    `${y}-${m}-${d}T${hora}`
-  ).getTime();
+    const [, d, m, y] = match;
 
-};
+    return new Date(
+      `${y}-${m}-${d}T${hora}`
+    ).getTime();
 
-return parseData(a) - parseData(b);
+  };
+
+  const ara = Date.now();
+
+  return Math.abs(
+    parseData(a) - ara
+  ) - Math.abs(
+    parseData(b) - ara
+  );
 
 });
 
