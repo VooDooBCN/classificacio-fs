@@ -19,6 +19,8 @@ const logosEquips = {};
 
 const CACHE_TIME = 1000 * 60 * 15; // 15 min
 
+const logosEquips = {};
+
 // =====================================
 // CATEGORIES DEL CLUB
 // =====================================
@@ -478,15 +480,6 @@ const marcador =
   resultatMatch
     ? resultatMatch[0]
     : hora || "";
-
-      const imgs = $(el)
-        .find("img");
-
-      const logoLocal =
-        imgs.eq(0).attr("src") || "";
-
-      const logoVisitant =
-        imgs.eq(1).attr("src") || "";
 
 const esResultat =
   !!(
