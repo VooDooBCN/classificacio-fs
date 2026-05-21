@@ -189,7 +189,7 @@ const filesArray = esPaginaEquip
       const equips = $(el)
         .find(".resultats-w-equip a");
 
-      if (equips.length < 2) continue;
+      if (equips.length < 1) continue;
 
 const nomsEquips = [];
 
