@@ -111,7 +111,11 @@ const categories = [
 // OBTENIR PARTIT
 // =====================================
 
-async function obtenirPartitEquip(url, equipNom) {
+async function obtenirPartitEquip(
+  url,
+  equipNom,
+  jornada = null
+) {
 
   try {
 
@@ -311,8 +315,11 @@ futursPartits.push({
   equip: equipNom,
 
   competicio,
+  
+  jornada,
 
   local,
+  
   visitant,
 
   hora: esRetirat
@@ -365,12 +372,17 @@ return futursPartits;
 // RESULTATS
 // =====================================
 
-async function obtenirPartitResultats(url, equipNom) {
+async function obtenirPartitResultats(
+  url,
+  equipNom,
+  jornada = null
+) {
   
-  return await obtenirPartitEquip(
-    url,
-    equipNom
-  );
+return await obtenirPartitEquip(
+  url,
+  equipNom,
+  jornada
+);
 
 }
 
@@ -389,10 +401,11 @@ async function precarregarLogos() {
 
 try {
 
-  await obtenirPartitResultats(
-    cat.url,
-    cat.equip
-  );
+await obtenirPartitResultats(
+  urlJornada,
+  cat.equip,
+  jornada
+);
 
 } catch (err) {
 
