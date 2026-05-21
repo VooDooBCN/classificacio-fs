@@ -121,16 +121,6 @@ async function obtenirPartitEquip(url, equipNom) {
 
     const $ = cheerio.load(data);
     
-    console.log(
-  $(".table_resultats").length
-);
-
-console.log(
-  $("table").length
-);
-    
-    console.log(data.substring(0, 5000));
-
     const esPaginaEquip =
       url.includes("/equip/");
 
@@ -592,11 +582,36 @@ async function precarregarLogos() {
 
     try {
 
-      for (
-        let jornada = 1;
-        jornada <= 30;
-        jornada++
-      ) {
+     const avui = new Date();
+
+const mes =
+  avui.getMonth() + 1;
+
+let jornadaActual = 10;
+
+if (mes >= 1) {
+  jornadaActual = 15;
+}
+
+if (mes >= 3) {
+  jornadaActual = 20;
+}
+
+if (mes >= 5) {
+  jornadaActual = 26;
+}
+
+const inici =
+  Math.max(
+    1,
+    jornadaActual - 9
+  );
+
+for (
+  let jornada = inici;
+  jornada <= jornadaActual;
+  jornada++
+) {
 
         const urlBase =
           cat.url.replace(
