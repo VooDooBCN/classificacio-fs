@@ -481,7 +481,19 @@ totsPartits.push(...partitsInicials);
 // jornades extra
 if (cat.url.includes("/resultats/")) {
 
-for (let jornada = 2; jornada <= 26; jornada++){
+const jornadaActual = 26;
+
+const inici =
+  Math.max(
+    2,
+    jornadaActual - 10
+  );
+
+for (
+  let jornada = inici;
+  jornada <= jornadaActual;
+  jornada++
+){
 
  const urlBase =
   cat.url.replace(/\/jornada-\d+/, "");
