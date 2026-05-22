@@ -120,7 +120,7 @@ async function obtenirPartitEquip(
   try {
 
     const { data } = await axios.get(url, {
-      timeout: 10000
+      timeout: 5000
     });
 
     const $ = cheerio.load(data);
@@ -552,8 +552,6 @@ if (cat.url.includes("/resultats/")) {
 
   }
 
-const promises = [];
-
 for (
   let jornada = inici;
   jornada <= final;
@@ -566,35 +564,20 @@ for (
   const urlJornada =
     `${urlBase}/jornada-${jornada}`;
 
-//  console.log(
-//    `➡️ Provant jornada ${jornada}:`,
-//    urlJornada
-//  );
-
-  promises.push(
-
-    obtenirPartitResultats(
+  const partitsJornada =
+    await obtenirPartitResultats(
       urlJornada,
       cat.equip,
       jornada
-    )
+    );
 
-  );
+  if (partitsJornada.length) {
 
-}
-  
-const resultats =
-  await Promise.all(promises);
-
-resultats.forEach(partits => {
-
-  if (partits.length) {
-
-    totsPartits.push(...partits);
+    totsPartits.push(...partitsJornada);
 
   }
 
-});
+}
 
 }
 
