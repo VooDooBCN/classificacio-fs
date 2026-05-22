@@ -552,37 +552,49 @@ if (cat.url.includes("/resultats/")) {
 
   }
 
-  for (
-    let jornada = inici;
-    jornada <= final;
-    jornada++
-  ) {
+const promises = [];
 
-    const urlBase =
-      cat.url.replace(/\/jornada-\d+/, "");
+for (
+  let jornada = inici;
+  jornada <= final;
+  jornada++
+) {
 
-    const urlJornada =
-      `${urlBase}/jornada-${jornada}`;
+  const urlBase =
+    cat.url.replace(/\/jornada-\d+/, "");
 
-    console.log(
-      `➡️ Provant jornada ${jornada}:`,
-      urlJornada
-    );
+  const urlJornada =
+    `${urlBase}/jornada-${jornada}`;
 
-    const partitsJornada =
-      await obtenirPartitResultats(
-        urlJornada,
-        cat.equip,
-        jornada
-      );
+  console.log(
+    `➡️ Provant jornada ${jornada}:`,
+    urlJornada
+  );
 
-    if (partitsJornada.length) {
+  promises.push(
 
-      totsPartits.push(...partitsJornada);
+    obtenirPartitResultats(
+      urlJornada,
+      cat.equip,
+      jornada
+    )
 
-    }
+  );
+
+}
+  
+const resultats =
+  await Promise.all(promises);
+
+resultats.forEach(partits => {
+
+  if (partits.length) {
+
+    totsPartits.push(...partits);
 
   }
+
+});
 
 }
 
