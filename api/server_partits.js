@@ -454,11 +454,11 @@ app.get("/api/partits", async (req, res) => {
     // CARREGAR PARTITS
     // =====================================
 
-const resultats = [];
+const resultats = await Promise.all(
 
-for (const cat of categories) {
+  categories.map(async (cat) => {
 
-  try {
+    try {
 
 // =====================================
 // OBTENIR TOTS ELS PARTITS
@@ -586,18 +586,22 @@ if (!totsPartits.length) {
   continue;
 }
     
-resultats.push(totsPartits[0]);
+return totsPartits[0];
 
-} catch (err) {
+        } catch (err) {
 
-  console.log(
-    "Error categoria:",
-    cat.equip
-  );
+          console.log(
+            "Error categoria:",
+            cat.equip
+          );
 
-}
+          return [];
 
-}
+        }
+
+      })
+
+    );
 
     // =====================================
     // FILTRAR NULLS
