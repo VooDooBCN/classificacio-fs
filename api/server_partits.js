@@ -120,7 +120,7 @@ async function obtenirPartitEquip(
   try {
 
     const { data } = await axios.get(url, {
-      timeout: 4000
+      timeout: 5000
     });
 
     const $ = cheerio.load(data);
