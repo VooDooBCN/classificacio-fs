@@ -454,11 +454,11 @@ app.get("/api/partits", async (req, res) => {
     // CARREGAR PARTITS
     // =====================================
 
-    const resultats = await Promise.all(
+const resultats = [];
 
-      categories.map(async (cat) => {
+for (const cat of categories) {
 
-        try {
+  try {
 
 // =====================================
 // OBTENIR TOTS ELS PARTITS
