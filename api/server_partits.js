@@ -392,7 +392,7 @@ return await obtenirPartitEquip(
 
 async function precarregarLogos() {
 
-  console.log("🔄 Precarregant logos...");
+//  console.log("🔄 Precarregant logos...");
 
   for (const cat of categories) {
 
@@ -418,12 +418,12 @@ await obtenirPartitResultats(
 
   }
 
-  console.log(
-    "LOGOS TOTALS:",
-    Object.keys(logosEquips).length
-  );
+//  console.log(
+//    "LOGOS TOTALS:",
+//    Object.keys(logosEquips).length
+//  );
 
-  console.log("✅ Logos precarregats");
+// console.log("✅ Logos precarregats");
 
 }
 
@@ -566,10 +566,10 @@ for (
   const urlJornada =
     `${urlBase}/jornada-${jornada}`;
 
-  console.log(
-    `➡️ Provant jornada ${jornada}:`,
-    urlJornada
-  );
+//  console.log(
+//    `➡️ Provant jornada ${jornada}:`,
+//    urlJornada
+//  );
 
   promises.push(
 
