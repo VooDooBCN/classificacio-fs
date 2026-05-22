@@ -120,7 +120,7 @@ async function obtenirPartitEquip(
   try {
 
     const { data } = await axios.get(url, {
-      timeout: 4000
+      timeout: 5000
     });
 
     const $ = cheerio.load(data);
@@ -454,11 +454,11 @@ app.get("/api/partits", async (req, res) => {
     // CARREGAR PARTITS
     // =====================================
 
-    const resultats = await Promise.all(
+const resultats = [];
 
-      categories.map(async (cat) => {
+for (const cat of categories) {
 
-        try {
+  try {
 
 // =====================================
 // OBTENIR TOTS ELS PARTITS
@@ -552,8 +552,6 @@ if (cat.url.includes("/resultats/")) {
 
   }
 
-const promises = [];
-
 for (
   let jornada = inici;
   jornada <= final;
@@ -566,36 +564,20 @@ for (
   const urlJornada =
     `${urlBase}/jornada-${jornada}`;
 
-//  console.log(
-//    `➡️ Provant jornada ${jornada}:`,
-//    urlJornada
-//  );
-
-  promises.push(
-
-    obtenirPartitResultats(
+  const partitsJornada =
+    await obtenirPartitResultats(
       urlJornada,
       cat.equip,
       jornada
-    )
+    );
 
-  );
+  if (partitsJornada.length) {
 
-}
-  
-const resultats =
-  await Promise.all(promises);
-
-resultats.forEach(partits => {
-
-  if (partits.length) {
-
-    totsPartits.push(...partits);
+    totsPartits.push(...partitsJornada);
 
   }
 
-});
-
+}
 }
 
 // si no hi ha partits
@@ -661,22 +643,18 @@ totsPartits.sort((a, b) => {
 // RETORNAR EL MÉS PROPER
 // =====================================
 
-return totsPartits[0];
+resultats.push(totsPartits[0]);
 
-        } catch (err) {
+} catch (err) {
 
-          console.log(
-            "Error categoria:",
-            cat.equip
-          );
+  console.log(
+    "Error categoria:",
+    cat.equip
+  );
 
-          return [];
+}
 
-        }
-
-      })
-
-    );
+}
 
     // =====================================
     // FILTRAR NULLS
