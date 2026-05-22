@@ -402,9 +402,8 @@ async function precarregarLogos() {
 try {
 
 await obtenirPartitResultats(
-  urlJornada,
-  cat.equip,
-  jornada
+  cat.url,
+  cat.equip
 );
 
 } catch (err) {
@@ -582,8 +581,9 @@ for (
 }
 
 // si no hi ha partits
+      
 if (!totsPartits.length) {
-  continue;
+  return null;
 }
     
 return totsPartits[0];
